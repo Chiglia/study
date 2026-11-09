@@ -1,0 +1,11 @@
+{
+  "errors": {
+    "pageNotFound": {
+      "title": "Oops! Pagina non trovata",
+      "description": "Sembra che la pagina che stai cercando sia stata spostata o non esista più."
+    }
+  },
+  "common": {
+    "backToHome": "Torna alla Home"
+  }
+}
