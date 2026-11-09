@@ -1,1 +1,26 @@
-<p>home works!</p>
+<section class="page-heading">
+  <div><div class="breadcrumb">IL TUO TEST · MODIFICA E ORGANIZZA</div><h1>{{ store.active()?.name }}</h1><p>Aggiungi le domande, poi premi Play per metterti alla prova.</p></div>
+  <div class="editor-controls"><app-test-selector variant="manage" /><button class="button primary" (click)="start()" [disabled]="(!store.questions().length && !store.session()) || store.blocked()"><i class="pi pi-play"></i> {{ store.session() ? 'Riprendi test' : 'Play · Avvia test' }}</button></div>
+</section>
+<p class="test-summary">{{ store.questions().length }} domande · {{ store.results().length }} sessioni completate · {{ average() === null ? 'Nessun risultato per ora' : average() + '% di risposte corrette' }}</p>
+<section class="question-section">
+  <div class="section-heading"><div><h2>Le domande del test <span class="count-pill">{{ store.questions().length }}</span></h2><p>Tutte le domande di questa raccolta rimangono in questo test.</p></div><button class="button primary" (click)="edit()" [disabled]="store.blocked()"><i class="pi pi-plus"></i> Nuova domanda</button></div>
+  <div class="question-panel">
+    <div class="list-toolbar"><div class="search-field"><i class="pi pi-search"></i><input aria-label="Cerca domande" placeholder="Cerca tra le tue domande..." [ngModel]="search()" (ngModelChange)="search.set($event)"></div><div class="filter-field"><i class="pi pi-filter"></i><select aria-label="Filtra per categoria" [ngModel]="category()" (ngModelChange)="category.set($event)"><option value="">Tutte le categorie</option>@for (item of categories; track item) { <option [value]="item">{{ item }}</option> }</select></div></div>
+    @if (filtered().length) {
+      <div class="list-label"><span>DOMANDA</span><span>CATEGORIA</span><span>AZIONI</span></div>
+      @for (question of filtered(); track question.id; let i = $index) {
+        <article class="question-row"><span class="question-number">{{ (i + 1).toString().padStart(2, '0') }}</span><div class="question-detail"><h3>{{ question.text }}</h3><span>{{ question.options.length }} opzioni <span class="separator">·</span> 1 risposta corretta</span></div><span class="category-pill">{{ question.category }}</span><div class="row-actions"><button class="icon-button" [attr.aria-label]="'Modifica: ' + question.text" (click)="edit(question)" [disabled]="store.blocked()"><i class="pi pi-pencil"></i></button><button class="icon-button delete-button" [attr.aria-label]="'Elimina: ' + question.text" (click)="deleting.set(question)" [disabled]="store.blocked()"><i class="pi pi-trash"></i></button></div></article>
+      }
+      <div class="list-footer">{{ filtered().length }} di {{ store.questions().length }} domande <span><i class="pi pi-check-circle"></i> Salvate sul tuo browser</span></div>
+    } @else {
+      <div class="empty-state"><div class="empty-icon"><i class="pi pi-clone"></i><span>+</span></div><h3>{{ store.questions().length ? 'Nessuna domanda trovata' : 'Ogni grande risultato inizia con una domanda.' }}</h3><p>{{ store.questions().length ? 'Prova un’altra ricerca o seleziona una categoria diversa.' : 'Crea la tua prima domanda e dai forma al tuo prossimo test.' }}</p>
+        @if (!store.questions().length) { <button class="button secondary" (click)="edit()" [disabled]="store.blocked()"><i class="pi pi-plus"></i> Crea la prima domanda</button> } @else { <button class="text-button" (click)="search.set(''); category.set('')">Rimuovi filtri</button> }
+      </div>
+    }
+  </div>
+</section>
+@if (editorOpen()) { <app-question-editor [question]="editing()" (closed)="editorOpen.set(false)" /> }
+@if (deleting(); as question) {
+  <div class="modal-backdrop" (click)="deleting.set(null)"><section class="dialog delete-dialog" role="dialog" aria-modal="true" aria-labelledby="delete-title" appModalFocus (click)="$event.stopPropagation()" (keydown.escape)="deleting.set(null)"><span class="eyebrow">GESTISCI LA RACCOLTA</span><h2 id="delete-title">Eliminare questa domanda?</h2><p class="muted">{{ question.text }}</p><p class="muted">L’operazione non può essere annullata. Un eventuale test in corso rimarrà invariato.</p>@if (store.error()) { <p class="form-error" role="alert">{{ store.error() }}</p> }<div class="dialog-actions"><button class="button secondary" autofocus (click)="deleting.set(null)">Annulla</button><button class="button danger" (click)="remove()">Elimina domanda</button></div></section></div>
+}

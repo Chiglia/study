@@ -1,0 +1,30 @@
+<div class="modal-backdrop" (click)="closed.emit()">
+  <section class="dialog editor-dialog" appModalFocus role="dialog" aria-modal="true" aria-labelledby="editor-title" (click)="$event.stopPropagation()" (keydown.escape)="closed.emit()">
+    <button class="icon-button dialog-close" aria-label="Chiudi editor" (click)="closed.emit()"><i class="pi pi-times"></i></button>
+    <span class="eyebrow">LA TUA RACCOLTA CRESCE</span>
+    <h2 id="editor-title">{{ question() ? 'Modifica domanda' : 'Una nuova cosa da imparare.' }}</h2>
+    <p class="muted">Scrivi la domanda e scegli la risposta corretta.</p>
+    <form (ngSubmit)="save()">
+      <label for="question-text">Domanda <span>*</span></label>
+      <textarea id="question-text" name="text" [(ngModel)]="text" placeholder="Es. Qual è la capitale dell'Australia?" rows="3" maxlength="2000" required autofocus></textarea>
+      <label for="category">Categoria</label>
+      <select id="category" name="category" [(ngModel)]="category">@for (item of categories; track item) { <option [value]="item">{{ item }}</option> }</select>
+      <fieldset><legend>Opzioni di risposta <span>*</span></legend>
+        <p class="option-hint">Seleziona il cerchio accanto alla risposta corretta.</p>
+        @for (option of options; track $index; let i = $index) {
+          <div class="option-field" [class.chosen]="correct === i">
+            <input type="radio" name="correct" [value]="i" [(ngModel)]="correct" [attr.aria-label]="'Imposta opzione ' + (i + 1) + ' come corretta'">
+            <span class="option-letter">{{ 'ABCDEF'[i] }}</span>
+            <input type="text" [name]="'option-' + i" [(ngModel)]="options[i]" [attr.aria-label]="'Risposta ' + (i + 1)" placeholder="Scrivi una risposta..." maxlength="500" required>
+            @if (options.length > 2) { <button type="button" class="icon-button" [attr.aria-label]="'Rimuovi opzione ' + (i + 1)" (click)="removeOption(i)"><i class="pi pi-times"></i></button> }
+          </div>
+        }
+      </fieldset>
+      @if (options.length < 6) { <button type="button" class="text-button" (click)="options.push('')"><i class="pi pi-plus"></i> Aggiungi opzione</button> }
+      @if (submitted && !valid) { <p class="form-error" role="alert">Compila la domanda e tutte le opzioni, usa risposte diverse e indica quella corretta.</p> }
+      @if (store.error()) { <p class="form-error" role="alert">{{ store.error() }}</p> }
+      @if (store.session()) { <p class="option-hint">Le modifiche saranno disponibili dal prossimo test. Il test in corso non cambia.</p> }
+      <div class="dialog-actions"><button type="button" class="button secondary" (click)="closed.emit()">Annulla</button><button type="submit" class="button primary" [disabled]="store.blocked()"><i class="pi pi-check"></i> Salva domanda</button></div>
+    </form>
+  </section>
+</div>

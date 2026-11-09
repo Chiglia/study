@@ -1,0 +1,20 @@
+<section aria-labelledby="my-tests-title">
+  <h2 id="my-tests-title"><i class="pi pi-folder"></i> I miei test <i class="pi pi-chevron-down"></i></h2>
+  <div class="test-links">
+    @for (test of store.collections(); track test.id) {
+      <a [routerLink]="['/test', test.id]" routerLinkActive="active" [title]="test.name"><i class="pi pi-file"></i><span>{{ test.name }}</span><small>{{ test.questions.length }}</small></a>
+    } @empty {
+      <p class="empty-note">Non hai ancora creato test.</p>
+    }
+  </div>
+</section>
+<section class="recent-section" aria-labelledby="recent-tests-title">
+  <h2 id="recent-tests-title">ULTIMI MODIFICATI</h2>
+  <div class="test-links">
+    @for (test of store.recent(); track test.id) {
+      <a [routerLink]="['/test', test.id]" [title]="test.name"><i class="pi pi-history"></i><span>{{ test.name }}</span></a>
+    } @empty {
+      <p class="empty-note">I test modificati compariranno qui.</p>
+    }
+  </div>
+</section>

@@ -1,0 +1,13 @@
+.editor-dialog { max-width: 610px; }
+form { margin-top: 25px; }
+label, legend { display: block; font-size: 12px; font-weight: 650; margin-bottom: 9px; }
+label span, legend span { color: var(--purple); }
+textarea, select { width: 100%; margin-bottom: 20px; }
+fieldset { border: 0; padding: 0; margin: 0; }
+.option-hint { font-size: 11px; color: var(--muted); line-height: 1.6; margin: 0 0 13px; }
+.option-field { display: flex; align-items: center; gap: 10px; border: 1px solid var(--border); border-radius: 9px; padding: 5px 10px; margin-bottom: 9px; }
+.option-field.chosen { border-color: #9c83d8; background: #f8f5ff; }
+.option-field input[type='radio'] { accent-color: var(--purple); width: 17px; height: 17px; cursor: pointer; }
+.option-letter { font-size: 11px; color: var(--muted); }
+.option-field input[type='text'] { border: none; background: transparent; padding: 10px 0; flex: 1; min-width: 0; box-shadow: none; }
+.text-button { margin-top: 5px; }

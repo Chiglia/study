@@ -1,0 +1,27 @@
+<section class="dashboard-heading">
+  <div><span class="eyebrow">IL TUO APPRENDIMENTO, A MODO TUO</span><h1>Un argomento, un test.<span> Il tuo ritmo.</span></h1><p>Crea un test, aggiungi le domande e mettiti alla prova quando vuoi.</p></div>
+  <app-test-selector />
+</section>
+@if (!store.collections().length) {
+  <section class="welcome-card">
+    <span class="welcome-icon"><i class="pi pi-folder-plus"></i></span>
+    <h2>Da cosa vuoi iniziare?</h2>
+    <p>Premi <strong>Crea test</strong> e scegli il nome dell’argomento.<br>Ti accompagneremo nella pagina dove inserire le tue domande.</p>
+    <div class="welcome-steps"><span>01 · Scegli un nome</span><i class="pi pi-arrow-right"></i><span>02 · Aggiungi le domande</span><i class="pi pi-arrow-right"></i><span>03 · Premi Play</span></div>
+  </section>
+} @else {
+  <div class="overview" aria-label="Riepilogo raccolta"><span><strong>{{ store.collections().length }}</strong> test creati</span><span><strong>{{ questionCount() }}</strong> domande totali</span><span><strong>{{ completedCount() }}</strong> sessioni completate</span></div>
+  <section aria-labelledby="dashboard-tests-title">
+    <div class="collection-heading"><h2 id="dashboard-tests-title">I tuoi test</h2><p>Apri un test per gestire le domande o iniziare a esercitarti.</p></div>
+    <div class="test-grid">
+      @for (test of store.collections(); track test.id) {
+        <a class="test-card" [routerLink]="['/test', test.id]">
+          <div class="card-top"><span class="folder-icon"><i class="pi pi-folder"></i></span>@if (test.session) { <span class="session-badge">Sessione in corso</span> }</div>
+          <h3>{{ test.name }}</h3>
+          <p>{{ test.questions.length }} domande <span>·</span> {{ test.results.length }} sessioni completate</p>
+          <div class="card-footer"><span>{{ test.modifiedAt ? 'Modificato il ' + (test.modifiedAt | date:'dd/MM/yyyy, HH:mm') : 'Pronto da organizzare' }}</span><strong>Apri test <i class="pi pi-arrow-right"></i></strong></div>
+        </a>
+      }
+    </div>
+  </section>
+}

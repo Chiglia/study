@@ -1,0 +1,34 @@
+<div class="app-layout">
+  <aside class="sidebar">
+    <a class="brand" routerLink="/" aria-label="QuizFlow, dashboard"><span class="brand-icon"><i class="pi pi-bolt"></i></span>Quiz<span>Flow</span></a>
+    <div class="workspace-label">IL TUO SPAZIO DI STUDIO</div>
+    <nav aria-label="Navigazione principale">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><i class="pi pi-th-large"></i> Dashboard</a>
+    </nav>
+    <app-test-navigation />
+    <div class="sidebar-bottom">
+      <div class="local-note"><span class="local-icon"><i class="pi pi-shield"></i></span><strong>Il tuo studio, solo tuo.</strong><p>I dati restano nel tuo browser.<br>Nessun account, nessun cloud.</p><span class="local-status"><span></span> Salvataggio locale</span></div>
+      <button class="help-button" (click)="help.set(true)"><i class="pi pi-question-circle"></i> Come funziona <i class="pi pi-arrow-up-right"></i></button>
+      <div class="sidebar-footer">Fatto per imparare, un quiz alla volta.</div>
+    </div>
+  </aside>
+  <div class="main-layout">
+    <header class="topbar"><span>Il tuo piccolo spazio per grandi progressi.</span><div><span class="device-badge"><i class="pi pi-desktop"></i> Solo su questo dispositivo</span><span class="avatar" aria-label="Profilo locale">TU</span></div></header>
+    @if (store.error()) {
+      <div class="storage-error" role="alert"><i class="pi pi-exclamation-triangle"></i><span>{{ store.error() }}</span>@if (store.blocked()) { <button class="button secondary" (click)="reset()">Ripristina dati</button> }</div>
+    }
+    <main><router-outlet /></main>
+    <footer class="main-footer"><span><i class="pi pi-lock"></i> Le tue domande non lasciano mai questo browser.</span><span>QuizFlow <span class="footer-dot">•</span> Impara al tuo ritmo</span></footer>
+  </div>
+</div>
+@if (help()) {
+  <div class="modal-backdrop" (click)="help.set(false)">
+    <section class="dialog help-dialog" role="dialog" aria-modal="true" aria-labelledby="help-title" appModalFocus (click)="$event.stopPropagation()" (keydown.escape)="help.set(false)">
+      <button class="icon-button dialog-close" autofocus aria-label="Chiudi guida" (click)="help.set(false)"><i class="pi pi-times"></i></button>
+      <span class="eyebrow">PICCOLI PASSI, GRANDI PROGRESSI</span><h2 id="help-title">Il tuo prossimo traguardo inizia qui.</h2>
+      <ol class="help-steps"><li><strong>Crea le tue domande</strong><p>Inserisci da 2 a 6 opzioni e indica quella corretta.</p></li><li><strong>Mettiti alla prova</strong><p>Le domande vengono mescolate a ogni nuovo test. Una risposta selezionata e definitiva: vedrai subito il risultato.</p></li><li><strong>Segui il tuo ritmo</strong><p>Premi Avanti senza rispondere per spostare la domanda in fondo. Le domande risposte non ritornano.</p></li></ol>
+      <p class="muted">Dalla dashboard premi Crea test e scegli un nome: arriverai alla pagina in cui aggiungere le domande e avviare il test con Play. Nella sidebar trovi tutti i tuoi test e gli ultimi due modificati. Ogni test mantiene progressi e risultati separati. Cancellando i dati del browser perderai tutti i test.</p>
+      <button class="button primary" (click)="help.set(false)">Tutto chiaro <i class="pi pi-check"></i></button>
+    </section>
+  </div>
+}

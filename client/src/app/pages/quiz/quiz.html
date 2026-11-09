@@ -1,0 +1,32 @@
+<div class="quiz-heading"><a class="text-button" [routerLink]="['/test', store.active()?.id]"><i class="pi pi-arrow-left"></i> Torna al test</a><h1>{{ store.active()?.name }}</h1><p>Nessun timer, nessuna pressione. Domande e risultati del test selezionato.</p></div>
+@if (store.session(); as session) {
+  @if (store.current(); as question) {
+    <section class="quiz-container">
+      <div class="progress-label"><span><i class="pi pi-bolt"></i> TEST IN CORSO</span><strong>{{ answered() }} / {{ session.questions.length }} risposte</strong></div>
+      <div class="progress-track" role="progressbar" aria-label="Domande risposte" [attr.aria-valuenow]="answered()" aria-valuemin="0" [attr.aria-valuemax]="session.questions.length"><div [style.width.%]="progress()"></div></div>
+      <article class="test-card">
+        <div class="question-meta"><span class="category-label">{{ question.category }}</span><span>{{ session.queue.length - (selected() !== null ? 1 : 0) }} ancora da rispondere</span></div>
+        <h2>{{ question.text }}</h2><p class="question-instruction">Scegli una risposta. Il feedback arriva subito.</p>
+        <div class="answer-options" role="group" aria-label="Opzioni di risposta">
+          @for (option of question.options; track $index; let i = $index) {
+            <button class="answer-option" [class.answer-correct]="selected() !== null && i === question.correct" [class.answer-wrong]="selected() === i && i !== question.correct" [disabled]="selected() !== null || store.blocked()" (click)="store.answer(i)">
+              <span class="answer-letter">{{ 'ABCDEF'[i] }}</span><span class="answer-text">{{ option }}</span>
+              @if (selected() !== null && i === question.correct) { <span class="answer-status">Corretta <i class="pi pi-check-circle"></i></span> } @else if (selected() === i) { <span class="answer-status">La tua risposta <i class="pi pi-times-circle"></i></span> } @else { <span class="answer-circle"></span> }
+            </button>
+          }
+        </div>
+        <div aria-live="polite">
+          @if (selected() !== null) {
+            <div class="feedback" [class.incorrect]="selected() !== question.correct"><i [class]="selected() === question.correct ? 'pi pi-check-circle' : 'pi pi-info-circle'"></i><div><strong>{{ selected() === question.correct ? 'Esatto, ottimo lavoro!' : 'Anche un errore è un passo avanti.' }}</strong><p>{{ selected() === question.correct ? 'Questa la sai! Continua così.' : 'La risposta corretta è: ' + question.options[question.correct] }}</p></div></div>
+          }
+        </div>
+        <div class="test-actions"><a class="text-button" [routerLink]="['/test', store.active()?.id]"><i class="pi pi-arrow-left"></i> Continua più tardi</a><button class="button primary" (click)="store.next()" [disabled]="store.blocked()">{{ selected() !== null && session.queue.length === 1 ? 'Vedi risultato' : 'Avanti' }}<i class="pi pi-arrow-right"></i></button></div>
+      </article>
+      <p class="quiz-tip"><i class="pi pi-info-circle"></i> {{ selected() === null ? (session.queue.length === 1 ? 'È l’ultima domanda rimasta: se la salti, resterà disponibile finché non rispondi.' : 'Non sei sicuro? Premi Avanti: ritroverai questa domanda dopo le altre.') : 'Risposta salvata. Questa domanda non ricomparirà durante il test.' }}</p>
+    </section>
+  }
+} @else if (result(); as result) {
+  <section class="result-card"><div class="result-icon"><i class="pi pi-trophy"></i></div><span class="eyebrow">UN ALTRO PASSO AVANTI</span><h2>Test completato. Ben fatto!</h2><p class="muted">Ogni risposta è un’occasione per imparare qualcosa.</p><div class="score">{{ score() }}<span>%</span></div><p class="score-detail"><strong>{{ result.correct }}</strong> risposte corrette su <strong>{{ result.total }}</strong></p><div class="result-breakdown"><span><i class="pi pi-check-circle"></i> {{ result.correct }} corrette</span><span><i class="pi pi-times-circle"></i> {{ result.total - result.correct }} errate</span></div><p class="result-date">Ultimo test · {{ result.date | date:'dd/MM/yyyy, HH:mm' }}</p><div class="result-actions"><a class="button secondary" routerLink="/">Torna alla dashboard</a><a class="button primary" [routerLink]="['/test', store.active()?.id]">Torna al test</a></div><p class="quiz-tip">Dalla pagina del test puoi modificare le domande o avviare una nuova sessione con Play.</p></section>
+} @else {
+  <section class="result-card"><div class="result-icon"><i class="pi pi-folder"></i></div><span class="eyebrow">SI PARTE DA QUI</span><h2>Prepara il tuo test.</h2><p class="muted">Aggiungi le domande e avvia la sessione con Play dalla pagina del test.</p><div class="result-actions"><a class="button primary" [routerLink]="['/test', store.active()?.id]">Apri il test</a></div></section>
+}
