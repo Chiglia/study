@@ -3,10 +3,11 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { QuizStore } from '../../services/quiz-store';
 import { ModalFocus } from '../../services/modal-focus';
+import { TestCatalog } from '../test-catalog/test-catalog';
 
 @Component({
   selector: 'app-test-selector',
-  imports: [FormsModule, ModalFocus],
+  imports: [FormsModule, ModalFocus, TestCatalog],
   templateUrl: './test-selector.html',
   styleUrl: './test-selector.css',
 })
@@ -15,6 +16,7 @@ export class TestSelector {
   private readonly router = inject(Router);
   readonly variant = input<'create' | 'manage'>('create');
   readonly mode = signal<'create' | 'rename' | 'delete' | null>(null);
+  readonly catalogOpen = signal(false);
   name = '';
   targetId = '';
   validation = '';

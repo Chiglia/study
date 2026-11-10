@@ -1,0 +1,82 @@
+<div class="modal-backdrop" (click)="closed.emit()">
+  <section
+    class="dialog catalog-dialog"
+    appModalFocus
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="catalog-title"
+    (click)="$event.stopPropagation()"
+    (keydown.escape)="closed.emit()"
+  >
+    <button
+      class="icon-button dialog-close"
+      aria-label="Chiudi catalogo test"
+      (click)="closed.emit()"
+    >
+      <i class="pi pi-times" aria-hidden="true"></i>
+    </button>
+    <h2 id="catalog-title">Cerca test</h2>
+    <label for="catalog-search">Argomento</label>
+    <div class="catalog-search">
+      <i class="pi pi-search" aria-hidden="true"></i>
+      <input
+        id="catalog-search"
+        type="search"
+        placeholder="Cerca un argomento"
+        [ngModel]="query()"
+        (ngModelChange)="query.set($event)"
+        autofocus
+      />
+    </div>
+    <div class="catalog-results" [attr.aria-busy]="loading()">
+      @if (loading()) {
+        <p class="muted" role="status">Caricamento dei test...</p>
+      } @else if (error()) {
+        <p class="form-error" role="alert">{{ error() }}</p>
+        <button class="button secondary" (click)="load()">
+          <i class="pi pi-refresh" aria-hidden="true"></i> Riprova
+        </button>
+      } @else {
+        <ul class="catalog-list">
+          @for (test of filtered(); track test.id) {
+            <li>
+              <div>
+                <h3>{{ test.name }}</h3>
+                <p class="muted">{{ test.questions.length }} domande</p>
+              </div>
+              <button
+                class="button secondary"
+                [disabled]="added().has(test.id) || store.blocked()"
+                (click)="add(test)"
+                [attr.aria-label]="(added().has(test.id) ? 'Aggiunto: ' : 'Aggiungi ') + test.name"
+              >
+                <i
+                  [class]="added().has(test.id) ? 'pi pi-check' : 'pi pi-plus'"
+                  aria-hidden="true"
+                ></i>
+                {{ added().has(test.id) ? 'Aggiunto' : 'Aggiungi' }}
+              </button>
+            </li>
+          } @empty {
+            <li>
+              <p class="muted">
+                {{
+                  query().trim()
+                    ? 'Nessun test trovato per questo argomento.'
+                    : 'Nessun test disponibile.'
+                }}
+              </p>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+    <p class="catalog-status" role="status">{{ message() }}</p>
+    @if (store.error()) {
+      <p class="form-error" role="alert">{{ store.error() }}</p>
+    }
+    <div class="dialog-actions">
+      <button class="button primary" (click)="closed.emit()">Chiudi</button>
+    </div>
+  </section>
+</div>

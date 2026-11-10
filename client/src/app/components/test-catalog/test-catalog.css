@@ -1,0 +1,80 @@
+.catalog-dialog {
+  max-width: 620px;
+}
+.catalog-dialog h2 {
+  margin-top: 0;
+  letter-spacing: 0;
+}
+label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  margin: 24px 0 9px;
+}
+.catalog-search {
+  position: relative;
+}
+.catalog-search > i {
+  position: absolute;
+  top: 50%;
+  left: 13px;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-size: 14px;
+}
+input {
+  width: 100%;
+  padding-left: 37px;
+}
+.catalog-results {
+  min-height: 120px;
+  margin-top: 18px;
+}
+.catalog-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.catalog-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+.catalog-list li > div {
+  min-width: 0;
+}
+h3 {
+  font-size: 15px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  margin: 0;
+}
+.catalog-list p {
+  margin: 4px 0 0;
+}
+.catalog-list .button {
+  flex-shrink: 0;
+  min-width: 106px;
+}
+.catalog-status {
+  min-height: 24px;
+  color: #387952;
+  font-size: 13px;
+  margin-top: 18px;
+  overflow-wrap: anywhere;
+}
+.catalog-dialog .dialog-actions {
+  margin-top: 8px;
+}
+@media (max-width: 380px) {
+  .catalog-list li {
+    gap: 10px;
+  }
+  .catalog-list .button {
+    padding-inline: 10px;
+    min-width: 96px;
+  }
+}

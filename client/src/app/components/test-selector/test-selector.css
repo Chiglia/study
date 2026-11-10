@@ -1,6 +1,25 @@
-:host { display: inline-block; }
-.test-controls { display: flex; gap: 9px; align-items: center; }
-.test-dialog { max-width: 510px; }
-form { margin-top: 23px; }
-form label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 9px; }
-form input { width: 100%; }
+:host {
+  display: inline-block;
+  max-width: 100%;
+}
+.test-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  align-items: center;
+}
+.test-dialog {
+  max-width: 510px;
+}
+form {
+  margin-top: 23px;
+}
+form label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 9px;
+}
+form input {
+  width: 100%;
+}

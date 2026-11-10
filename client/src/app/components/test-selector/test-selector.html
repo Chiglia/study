@@ -1,29 +1,96 @@
 <div class="test-controls" aria-label="Gestione del test">
   @if (variant() === 'create') {
-    <button class="button primary" (click)="open('create')" [disabled]="store.blocked()"><i class="pi pi-plus"></i> Crea test</button>
+    <button class="button primary" (click)="open('create')" [disabled]="store.blocked()">
+      <i class="pi pi-plus"></i> Crea test
+    </button>
+    <button class="button secondary" (click)="catalogOpen.set(true)" [disabled]="store.blocked()">
+      <i class="pi pi-search" aria-hidden="true"></i> Cerca test
+    </button>
   } @else {
-    <button class="button secondary" (click)="open('rename')" [disabled]="store.blocked()"><i class="pi pi-pencil"></i> Rinomina</button>
-    <button class="icon-button" aria-label="Elimina test selezionato" (click)="open('delete')" [disabled]="store.blocked()"><i class="pi pi-trash"></i></button>
+    <button class="button secondary" (click)="open('rename')" [disabled]="store.blocked()">
+      <i class="pi pi-pencil"></i> Rinomina
+    </button>
+    <button
+      class="icon-button"
+      aria-label="Elimina test selezionato"
+      (click)="open('delete')"
+      [disabled]="store.blocked()"
+    >
+      <i class="pi pi-trash"></i>
+    </button>
   }
 </div>
+@if (catalogOpen()) {
+  <app-test-catalog (closed)="catalogOpen.set(false)" />
+}
 @if (mode(); as mode) {
   <div class="modal-backdrop" (click)="this.mode.set(null)">
-    <section class="dialog test-dialog" appModalFocus role="dialog" aria-modal="true" aria-labelledby="test-dialog-title" (click)="$event.stopPropagation()" (keydown.escape)="this.mode.set(null)">
-      <button class="icon-button dialog-close" aria-label="Chiudi gestione test" (click)="this.mode.set(null)"><i class="pi pi-times"></i></button>
+    <section
+      class="dialog test-dialog"
+      appModalFocus
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="test-dialog-title"
+      (click)="$event.stopPropagation()"
+      (keydown.escape)="this.mode.set(null)"
+    >
+      <button
+        class="icon-button dialog-close"
+        aria-label="Chiudi gestione test"
+        (click)="this.mode.set(null)"
+      >
+        <i class="pi pi-times"></i>
+      </button>
       <span class="eyebrow">UNO SPAZIO PER OGNI ARGOMENTO</span>
-      <h2 id="test-dialog-title">{{ mode === 'delete' ? 'Eliminare questo test?' : mode === 'rename' ? 'Rinomina il test' : 'Crea un nuovo test' }}</h2>
+      <h2 id="test-dialog-title">
+        {{
+          mode === 'delete'
+            ? 'Eliminare questo test?'
+            : mode === 'rename'
+              ? 'Rinomina il test'
+              : 'Crea un nuovo test'
+        }}
+      </h2>
       @if (mode === 'delete') {
-        <p class="muted"><strong>{{ name }}</strong></p><p class="muted">Verranno eliminate tutte le sue domande, l’eventuale test in corso e i suoi risultati. Gli altri test non cambieranno. L’operazione non può essere annullata.</p>
-        @if (store.error()) { <p class="form-error" role="alert">{{ store.error() }}</p> }
-        <div class="dialog-actions"><button class="button secondary" autofocus (click)="this.mode.set(null)">Annulla</button><button class="button danger" (click)="remove()">Elimina test</button></div>
+        <p class="muted">
+          <strong>{{ name }}</strong>
+        </p>
+        <p class="muted">
+          Verranno eliminate tutte le sue domande, l’eventuale test in corso e i suoi risultati. Gli
+          altri test non cambieranno. L’operazione non può essere annullata.
+        </p>
+        @if (store.error()) {
+          <p class="form-error" role="alert">{{ store.error() }}</p>
+        }
+        <div class="dialog-actions">
+          <button class="button secondary" autofocus (click)="this.mode.set(null)">Annulla</button
+          ><button class="button danger" (click)="remove()">Elimina test</button>
+        </div>
       } @else {
         <p class="muted">Scegli un nome per riconoscere l’argomento, ad esempio “Storia romana”.</p>
         <form (ngSubmit)="save()">
           <label for="test-name">Nome del test</label>
-          <input id="test-name" name="testName" [(ngModel)]="name" maxlength="100" placeholder="Es. JavaScript" autofocus>
-          @if (validation) { <p class="form-error" role="alert">{{ validation }}</p> }
-          @if (store.error()) { <p class="form-error" role="alert">{{ store.error() }}</p> }
-          <div class="dialog-actions"><button type="button" class="button secondary" (click)="this.mode.set(null)">Annulla</button><button type="submit" class="button primary">{{ mode === 'create' ? 'Crea test' : 'Salva nome' }}</button></div>
+          <input
+            id="test-name"
+            name="testName"
+            [(ngModel)]="name"
+            maxlength="100"
+            placeholder="Es. JavaScript"
+            autofocus
+          />
+          @if (validation) {
+            <p class="form-error" role="alert">{{ validation }}</p>
+          }
+          @if (store.error()) {
+            <p class="form-error" role="alert">{{ store.error() }}</p>
+          }
+          <div class="dialog-actions">
+            <button type="button" class="button secondary" (click)="this.mode.set(null)">
+              Annulla</button
+            ><button type="submit" class="button primary">
+              {{ mode === 'create' ? 'Crea test' : 'Salva nome' }}
+            </button>
+          </div>
         </form>
       }
     </section>

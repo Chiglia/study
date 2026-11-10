@@ -1,0 +1,44 @@
+{
+  "tests": [
+    {
+      "id": "matematica-base",
+      "name": "Matematica di base",
+      "questions": [
+        { "id": "math-1", "text": "Quanto fa 12 x 8?", "options": ["86", "96", "108", "88"], "correct": 1, "category": "Scienze" },
+        { "id": "math-2", "text": "Quale numero e primo?", "options": ["21", "27", "29", "33"], "correct": 2, "category": "Scienze" },
+        { "id": "math-3", "text": "Quanto vale il 25% di 200?", "options": ["25", "40", "50", "75"], "correct": 2, "category": "Scienze" },
+        { "id": "math-4", "text": "Quanto misura la somma degli angoli interni di un triangolo?", "options": ["90 gradi", "180 gradi", "270 gradi", "360 gradi"], "correct": 1, "category": "Scienze" }
+      ]
+    },
+    {
+      "id": "storia-romana",
+      "name": "Storia romana",
+      "questions": [
+        { "id": "history-1", "text": "In quale anno, secondo la tradizione, fu fondata Roma?", "options": ["753 a.C.", "509 a.C.", "27 a.C.", "476 d.C."], "correct": 0, "category": "Storia" },
+        { "id": "history-2", "text": "Chi fu il primo imperatore romano?", "options": ["Giulio Cesare", "Nerone", "Augusto", "Traiano"], "correct": 2, "category": "Storia" },
+        { "id": "history-3", "text": "Contro quale citta Roma combatte le guerre puniche?", "options": ["Atene", "Cartagine", "Sparta", "Alessandria"], "correct": 1, "category": "Storia" },
+        { "id": "history-4", "text": "Quale fiume attraversa Roma?", "options": ["Po", "Arno", "Tevere", "Adige"], "correct": 2, "category": "Storia" }
+      ]
+    },
+    {
+      "id": "scienze-naturali",
+      "name": "Scienze naturali",
+      "questions": [
+        { "id": "science-1", "text": "Qual e la formula chimica dell'acqua?", "options": ["CO2", "O2", "H2O", "NaCl"], "correct": 2, "category": "Scienze" },
+        { "id": "science-2", "text": "Quale pianeta e il piu vicino al Sole?", "options": ["Venere", "Terra", "Marte", "Mercurio"], "correct": 3, "category": "Scienze" },
+        { "id": "science-3", "text": "Quale gas assorbono le piante durante la fotosintesi?", "options": ["Ossigeno", "Anidride carbonica", "Azoto", "Elio"], "correct": 1, "category": "Scienze" },
+        { "id": "science-4", "text": "Quale organo pompa il sangue nel corpo umano?", "options": ["Fegato", "Polmone", "Cuore", "Rene"], "correct": 2, "category": "Scienze" }
+      ]
+    },
+    {
+      "id": "tecnologia-web",
+      "name": "Tecnologia e web",
+      "questions": [
+        { "id": "tech-1", "text": "Quale linguaggio descrive la struttura di una pagina web?", "options": ["CSS", "HTML", "SQL", "Python"], "correct": 1, "category": "Tecnologia" },
+        { "id": "tech-2", "text": "A cosa serve principalmente il CSS?", "options": ["Gestire database", "Cifrare messaggi", "Definire lo stile delle pagine web", "Configurare reti"], "correct": 2, "category": "Tecnologia" },
+        { "id": "tech-3", "text": "Quanti bit contiene un byte?", "options": ["2", "4", "8", "16"], "correct": 2, "category": "Tecnologia" },
+        { "id": "tech-4", "text": "Quale protocollo protegge la comunicazione tra browser e sito tramite TLS?", "options": ["HTTP", "FTP", "SMTP", "HTTPS"], "correct": 3, "category": "Tecnologia" }
+      ]
+    }
+  ]
+}

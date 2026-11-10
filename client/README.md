@@ -13,7 +13,8 @@ Aprire `http://localhost:4200`. Per generare il sito statico: `npm run build`.
 
 ## Funzionamento
 
-- La dashboard mostra i test e il pulsante Crea test, senza azioni per inserire domande o avviare sessioni.
+- La dashboard mostra i test e i pulsanti Crea test e Cerca test, senza azioni per inserire domande o avviare sessioni.
+- Cerca test apre il catalogo con ricerca per nome o categoria e permette di aggiungere copie indipendenti dei test preimpostati alla raccolta locale. I nomi gia presenti ricevono un suffisso numerico.
 - Crea test richiede un nome e apre la pagina dedicata `/test/:id`, dove aggiungere, cercare, filtrare e modificare le domande, rinominare o eliminare il test.
 - Il pulsante Play (o Riprendi test) si trova nella pagina di modifica e apre `/test/:id/svolgi`.
 - La sidebar mostra I miei test come elenco sempre aperto, seguito dagli ultimi due test modificati. Creazione, rinomina e modifiche alle domande aggiornano l'ordine; navigazione e risposte no.
@@ -31,6 +32,12 @@ Aprire `http://localhost:4200`. Per generare il sito statico: `npm run build`.
 - Un test usa una copia della raccolta iniziale: modificare la raccolta non cambia un test in corso.
 - La pagina del test mostra il risultato finale e permette di avviare un nuovo test.
 
+## Catalogo preimpostato
+
+Il catalogo si trova in [public/test-catalog.json](public/test-catalog.json) ed e caricato all'apertura del modale. Per aggiungere un argomento, inserire un elemento nell'array `tests` con `id` univoco, `name` (massimo 100 caratteri) e `questions` non vuoto.
+
+Ogni domanda contiene `id` univoco nel test, `text`, `category`, da 2 a 6 stringhe in `options` e `correct`, indice della risposta corretta a partire da zero. Sessioni e risultati non appartengono al catalogo: ogni importazione parte senza avanzamento. Il catalogo viene validato prima dell'importazione e una scrittura locale fallita non modifica la raccolta.
+
 ## Dati locali
 
 I dati sono disponibili solo sul browser e sull'origine utilizzati. Non sono sincronizzati fra dispositivi. Cancellare i dati del sito elimina anche la raccolta. La navigazione privata potrebbe non conservarli.
@@ -44,4 +51,4 @@ npm test
 npm run build
 ```
 
-I test usano il runner integrato di Node (Node 24 o successivo) e verificano coda casuale, domande saltate, feedback, snapshot, migrazione, isolamento fra test e validazione dei dati persistenti. `rewriteRelativeImportExtensions` consente di condividere i moduli TypeScript puri fra build Angular e test Node senza un runner aggiuntivo.
+I test usano il runner integrato di Node (Node 24 o successivo) e verificano coda casuale, domande saltate, feedback, snapshot, migrazione, isolamento fra test, validazione dei dati persistenti e importazione del catalogo JSON. `rewriteRelativeImportExtensions` consente di condividere i moduli TypeScript puri fra build Angular e test Node senza un runner aggiuntivo.

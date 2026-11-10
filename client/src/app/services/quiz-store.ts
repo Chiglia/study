@@ -1,6 +1,7 @@
 import { computed, Injectable, signal } from '@angular/core';
 import { Question, QuizCollection, QuizLibrary } from './quiz.models';
 import { advanceQuestion, answerQuestion, createSession } from './quiz-state';
+import { CatalogTest, importCatalogTest } from './test-catalog';
 import {
   activeCollection, deleteCollection, emptyLibrary, parseLibrary,
   recentCollections, saveCollection, selectCollection, updateCollection,
@@ -82,6 +83,10 @@ export class QuizStore {
 
   saveTest(name: string, id: string = crypto.randomUUID()): boolean {
     return this.changeLibrary(() => saveCollection(this.data(), id, name));
+  }
+
+  importTest(test: CatalogTest): boolean {
+    return this.changeLibrary(() => importCatalogTest(this.data(), test));
   }
 
   deleteTest(id: string): boolean {
