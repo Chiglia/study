@@ -1,0 +1,333 @@
+{
+  "tests": [
+    {
+      "id": "matematica-base",
+      "name": "Matematica di base",
+      "questions": [
+        {
+          "id": "math-1",
+          "text": "Quanto fa 12 x 8?",
+          "options": ["86", "96", "108", "88"],
+          "correct": 1,
+          "category": "Scienze"
+        },
+        {
+          "id": "math-2",
+          "text": "Quale numero \u00e8 primo?",
+          "options": ["21", "27", "29", "33"],
+          "correct": 2,
+          "category": "Scienze"
+        },
+        {
+          "id": "math-3",
+          "text": "Quanto vale il 25% di 200?",
+          "options": ["25", "40", "50", "75"],
+          "correct": 2,
+          "category": "Scienze"
+        },
+        {
+          "id": "math-4",
+          "text": "Quanto misura la somma degli angoli interni di un triangolo?",
+          "options": ["90 gradi", "180 gradi", "270 gradi", "360 gradi"],
+          "correct": 1,
+          "category": "Scienze"
+        },
+        {
+          "id": "math-5",
+          "text": "Quanto vale 3 elevato alla quarta potenza?",
+          "options": ["12", "27", "64", "81"],
+          "correct": 3,
+          "category": "Scienze"
+        },
+        {
+          "id": "math-6",
+          "text": "Qual \u00e8 la radice quadrata di 144?",
+          "options": ["10", "11", "12", "14"],
+          "correct": 2,
+          "category": "Scienze"
+        },
+        {
+          "id": "math-7",
+          "text": "Qual \u00e8 l'area di un rettangolo con base 7 cm e altezza 5 cm?",
+          "options": ["24 cm quadrati", "35 cm quadrati", "12 cm quadrati", "70 cm quadrati"],
+          "correct": 1,
+          "category": "Scienze"
+        },
+        {
+          "id": "math-8",
+          "text": "Quale valore di x soddisfa l'equazione 2x + 6 = 18?",
+          "options": ["6", "9", "12", "3"],
+          "correct": 0,
+          "category": "Scienze"
+        },
+        {
+          "id": "math-9",
+          "text": "Qual \u00e8 la media aritmetica di 4, 6 e 8?",
+          "options": ["5", "6", "7", "9"],
+          "correct": 1,
+          "category": "Scienze"
+        },
+        {
+          "id": "math-10",
+          "text": "Quanto fa 1/2 + 1/4?",
+          "options": ["2/6", "1/8", "3/4", "2/4"],
+          "correct": 2,
+          "category": "Scienze"
+        }
+      ]
+    },
+    {
+      "id": "storia-romana",
+      "name": "Storia romana",
+      "questions": [
+        {
+          "id": "history-1",
+          "text": "In quale anno, secondo la tradizione, fu fondata Roma?",
+          "options": ["753 a.C.", "509 a.C.", "27 a.C.", "476 d.C."],
+          "correct": 0,
+          "category": "Storia"
+        },
+        {
+          "id": "history-2",
+          "text": "Chi fu il primo imperatore romano?",
+          "options": ["Giulio Cesare", "Nerone", "Augusto", "Traiano"],
+          "correct": 2,
+          "category": "Storia"
+        },
+        {
+          "id": "history-3",
+          "text": "Contro quale citt\u00e0 Roma combatt\u00e9 le guerre puniche?",
+          "options": ["Atene", "Cartagine", "Sparta", "Alessandria"],
+          "correct": 1,
+          "category": "Storia"
+        },
+        {
+          "id": "history-4",
+          "text": "Quale fiume attraversa Roma?",
+          "options": ["Po", "Arno", "Tevere", "Adige"],
+          "correct": 2,
+          "category": "Storia"
+        },
+        {
+          "id": "history-5",
+          "text": "In quale anno, secondo la cronologia tradizionale, ebbe inizio la Repubblica romana?",
+          "options": ["753 a.C.", "509 a.C.", "44 a.C.", "27 a.C."],
+          "correct": 1,
+          "category": "Storia"
+        },
+        {
+          "id": "history-6",
+          "text": "Quale vulcano seppell\u00ec Pompei nel 79 d.C.?",
+          "options": ["Etna", "Stromboli", "Vesuvio", "Vulcano"],
+          "correct": 2,
+          "category": "Storia"
+        },
+        {
+          "id": "history-7",
+          "text": "Quale lingua parlavano principalmente gli antichi Romani?",
+          "options": ["Latino", "Etrusco", "Aramaico", "Sanscrito"],
+          "correct": 0,
+          "category": "Storia"
+        },
+        {
+          "id": "history-8",
+          "text": "Qual \u00e8 l'altro nome del Colosseo?",
+          "options": [
+            "Teatro di Marcello",
+            "Circo Massimo",
+            "Foro di Augusto",
+            "Anfiteatro Flavio"
+          ],
+          "correct": 3,
+          "category": "Storia"
+        },
+        {
+          "id": "history-9",
+          "text": "Quale imperatore inaugur\u00f2 Costantinopoli come nuova capitale nel 330 d.C.?",
+          "options": ["Diocleziano", "Costantino", "Adriano", "Claudio"],
+          "correct": 1,
+          "category": "Storia"
+        },
+        {
+          "id": "history-10",
+          "text": "Quale anno segna convenzionalmente la fine dell'Impero romano d'Occidente?",
+          "options": ["313 d.C.", "395 d.C.", "476 d.C.", "1453 d.C."],
+          "correct": 2,
+          "category": "Storia"
+        }
+      ]
+    },
+    {
+      "id": "scienze-naturali",
+      "name": "Scienze naturali",
+      "questions": [
+        {
+          "id": "science-1",
+          "text": "Qual \u00e8 la formula chimica dell'acqua?",
+          "options": ["CO2", "O2", "H2O", "NaCl"],
+          "correct": 2,
+          "category": "Scienze"
+        },
+        {
+          "id": "science-2",
+          "text": "Quale pianeta \u00e8 il pi\u00f9 vicino al Sole?",
+          "options": ["Venere", "Terra", "Marte", "Mercurio"],
+          "correct": 3,
+          "category": "Scienze"
+        },
+        {
+          "id": "science-3",
+          "text": "Quale gas assorbono le piante durante la fotosintesi?",
+          "options": ["Ossigeno", "Anidride carbonica", "Azoto", "Elio"],
+          "correct": 1,
+          "category": "Scienze"
+        },
+        {
+          "id": "science-4",
+          "text": "Quale organo pompa il sangue nel corpo umano?",
+          "options": ["Fegato", "Polmone", "Cuore", "Rene"],
+          "correct": 2,
+          "category": "Scienze"
+        },
+        {
+          "id": "science-5",
+          "text": "In quali organi avviene principalmente lo scambio di ossigeno e anidride carbonica con l'aria nel corpo umano?",
+          "options": ["Reni", "Polmoni", "Stomaco", "Intestino"],
+          "correct": 1,
+          "category": "Scienze"
+        },
+        {
+          "id": "science-6",
+          "text": "Qual \u00e8 l'unit\u00e0 strutturale e funzionale di base degli esseri viventi?",
+          "options": ["Organo", "Tessuto", "Cellula", "Apparato"],
+          "correct": 2,
+          "category": "Scienze"
+        },
+        {
+          "id": "science-7",
+          "text": "Quale molecola contiene l'informazione genetica nelle cellule umane?",
+          "options": ["Glucosio", "Acqua", "Amido", "DNA"],
+          "correct": 3,
+          "category": "Scienze"
+        },
+        {
+          "id": "science-8",
+          "text": "Come si chiama il movimento della Terra intorno al Sole?",
+          "options": ["Rivoluzione", "Rotazione", "Oscillazione", "Vibrazione"],
+          "correct": 0,
+          "category": "Scienze"
+        },
+        {
+          "id": "science-9",
+          "text": "Come si chiama il passaggio dallo stato solido allo stato liquido?",
+          "options": ["Condensazione", "Sublimazione", "Fusione", "Solidificazione"],
+          "correct": 2,
+          "category": "Scienze"
+        },
+        {
+          "id": "science-10",
+          "text": "Perch\u00e9 il suono non si propaga nel vuoto?",
+          "options": [
+            "La temperatura \u00e8 sempre troppo bassa",
+            "Manca un mezzo materiale che trasmetta le vibrazioni",
+            "Non c'\u00e8 luce",
+            "La gravit\u00e0 \u00e8 sempre assente"
+          ],
+          "correct": 1,
+          "category": "Scienze"
+        }
+      ]
+    },
+    {
+      "id": "tecnologia-web",
+      "name": "Tecnologia e web",
+      "questions": [
+        {
+          "id": "tech-1",
+          "text": "Quale linguaggio descrive la struttura di una pagina web?",
+          "options": ["CSS", "HTML", "SQL", "Python"],
+          "correct": 1,
+          "category": "Tecnologia"
+        },
+        {
+          "id": "tech-2",
+          "text": "A cosa serve principalmente il CSS?",
+          "options": [
+            "Gestire database",
+            "Cifrare messaggi",
+            "Definire lo stile delle pagine web",
+            "Configurare reti"
+          ],
+          "correct": 2,
+          "category": "Tecnologia"
+        },
+        {
+          "id": "tech-3",
+          "text": "Quanti bit contiene un byte?",
+          "options": ["2", "4", "8", "16"],
+          "correct": 2,
+          "category": "Tecnologia"
+        },
+        {
+          "id": "tech-4",
+          "text": "Quale protocollo protegge la comunicazione tra browser e sito tramite TLS?",
+          "options": ["HTTP", "FTP", "SMTP", "HTTPS"],
+          "correct": 3,
+          "category": "Tecnologia"
+        },
+        {
+          "id": "tech-5",
+          "text": "Quale linguaggio viene eseguito normalmente dal browser per aggiungere interattivit\u00e0 alle pagine web?",
+          "options": ["SQL", "JavaScript", "CSS", "XML"],
+          "correct": 1,
+          "category": "Tecnologia"
+        },
+        {
+          "id": "tech-6",
+          "text": "Qual \u00e8 una funzione principale del DNS?",
+          "options": [
+            "Comprimere immagini",
+            "Cifrare i file sul disco",
+            "Tradurre nomi di dominio in indirizzi IP",
+            "Misurare la velocit\u00e0 del processore"
+          ],
+          "correct": 2,
+          "category": "Tecnologia"
+        },
+        {
+          "id": "tech-7",
+          "text": "Quale linguaggio si usa comunemente per interrogare database relazionali?",
+          "options": ["SQL", "HTML", "CSS", "Markdown"],
+          "correct": 0,
+          "category": "Tecnologia"
+        },
+        {
+          "id": "tech-8",
+          "text": "Quale memoria conserva temporaneamente i dati dei programmi in esecuzione e normalmente li perde allo spegnimento?",
+          "options": ["SSD", "Disco rigido", "Memoria flash USB", "RAM"],
+          "correct": 3,
+          "category": "Tecnologia"
+        },
+        {
+          "id": "tech-9",
+          "text": "Che cos'\u00e8 il phishing?",
+          "options": [
+            "Un metodo per comprimere file",
+            "Un tentativo di ottenere dati sensibili fingendosi un soggetto affidabile",
+            "Un tipo di cavo di rete",
+            "Un aggiornamento automatico del browser"
+          ],
+          "correct": 1,
+          "category": "Tecnologia"
+        },
+        {
+          "id": "tech-10",
+          "text": "Quale codice di stato HTTP indica che una risorsa non \u00e8 stata trovata?",
+          "options": ["200", "301", "404", "500"],
+          "correct": 2,
+          "category": "Tecnologia"
+        }
+      ]
+    }
+  ]
+}
