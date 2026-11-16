@@ -12,6 +12,7 @@ export interface QuizSession {
   questions: Question[];
   queue: string[];
   answers: Record<string, number>;
+  questionsPerPage?: number | 'all';
 }
 
 export interface QuizResult {

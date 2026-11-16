@@ -13,7 +13,7 @@
     </div>
   </aside>
   <div class="main-layout">
-    <header class="topbar"><span>Il tuo piccolo spazio per grandi progressi.</span><div><span class="device-badge"><i class="pi pi-desktop"></i> Solo su questo dispositivo</span><span class="avatar" aria-label="Profilo locale">TU</span></div></header>
+    <header class="topbar"><span class="topbar-message">Il tuo piccolo spazio per grandi progressi.</span><div><button class="catalog-button" (click)="catalogOpen.set(true)" [disabled]="store.blocked()"><i class="pi pi-search" aria-hidden="true"></i> Cerca test</button><span class="avatar" aria-label="Profilo locale">TU</span></div></header>
     @if (store.error()) {
       <div class="storage-error" role="alert"><i class="pi pi-exclamation-triangle"></i><span>{{ store.error() }}</span>@if (store.blocked()) { <button class="button secondary" (click)="reset()">Ripristina dati</button> }</div>
     }
@@ -21,6 +21,7 @@
     <footer class="main-footer"><span><i class="pi pi-lock"></i> Le tue domande non lasciano mai questo browser.</span><span>QuizFlow <span class="footer-dot">•</span> Impara al tuo ritmo</span></footer>
   </div>
 </div>
+@if (catalogOpen()) { <app-test-catalog (closed)="catalogOpen.set(false)" /> }
 @if (help()) {
   <div class="modal-backdrop" (click)="help.set(false)">
     <section class="dialog help-dialog" role="dialog" aria-modal="true" aria-labelledby="help-title" appModalFocus (click)="$event.stopPropagation()" (keydown.escape)="help.set(false)">

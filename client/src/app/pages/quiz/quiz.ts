@@ -2,6 +2,7 @@ import { Component, computed, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { QuizStore } from '../../services/quiz-store';
+import { pageSize } from '../../services/quiz-state';
 
 @Component({
   selector: 'app-quiz',
@@ -11,11 +12,25 @@ import { QuizStore } from '../../services/quiz-store';
 })
 export class Quiz {
   readonly store = inject(QuizStore);
-  readonly selected = computed(() => {
-    const id = this.store.current()?.id;
+  readonly visibleQuestions = computed(() => {
     const session = this.store.session();
-    return id && session && Object.hasOwn(session.answers, id) ? session.answers[id] : null;
+    if (!session) return [];
+    return session.queue.slice(0, pageSize(session))
+      .map(id => session.questions.find(question => question.id === id))
+      .filter(question => question !== undefined);
   });
+  readonly remaining = computed(() => {
+    const session = this.store.session();
+    return session ? session.questions.length - Object.keys(session.answers).length : 0;
+  });
+  readonly pageComplete = computed(() => {
+    const session = this.store.session();
+    return !!session && session.queue.every(id => Object.hasOwn(session.answers, id));
+  });
+  selected(id: string): number | null {
+    const answers = this.store.session()?.answers;
+    return answers && Object.hasOwn(answers, id) ? answers[id] : null;
+  }
   readonly answered = computed(() => Object.keys(this.store.session()?.answers ?? {}).length);
   readonly progress = computed(() => {
     const total = this.store.session()?.questions.length ?? 0;

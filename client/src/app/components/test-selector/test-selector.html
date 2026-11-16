@@ -3,26 +3,21 @@
     <button class="button primary" (click)="open('create')" [disabled]="store.blocked()">
       <i class="pi pi-plus"></i> Crea test
     </button>
-    <button class="button secondary" (click)="catalogOpen.set(true)" [disabled]="store.blocked()">
-      <i class="pi pi-search" aria-hidden="true"></i> Cerca test
-    </button>
+    <app-test-import [compact]="true" />
   } @else {
-    <button class="button secondary" (click)="open('rename')" [disabled]="store.blocked()">
-      <i class="pi pi-pencil"></i> Rinomina
+    <button class="management-action" (click)="open('rename')" [disabled]="store.blocked()">
+      <i class="pi pi-pencil" aria-hidden="true"></i> Rinomina test
     </button>
     <button
-      class="icon-button"
+      class="management-action delete-action"
       aria-label="Elimina test selezionato"
       (click)="open('delete')"
       [disabled]="store.blocked()"
     >
-      <i class="pi pi-trash"></i>
+      <i class="pi pi-trash" aria-hidden="true"></i> Elimina test
     </button>
   }
 </div>
-@if (catalogOpen()) {
-  <app-test-catalog (closed)="catalogOpen.set(false)" />
-}
 @if (mode(); as mode) {
   <div class="modal-backdrop" (click)="this.mode.set(null)">
     <section

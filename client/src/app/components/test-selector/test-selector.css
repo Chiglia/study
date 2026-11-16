@@ -11,6 +11,29 @@
 .test-dialog {
   max-width: 510px;
 }
+app-test-import {
+  display: inline-block;
+}
+.test-controls:has(.management-action) {
+  display: grid;
+  gap: 2px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+.management-action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px;
+  background: transparent;
+  border-radius: 6px;
+  color: #716880;
+  text-align: left;
+  font-size: 11px;
+}
+.management-action:hover:not(:disabled) { background: #f7f5fc; }
+.delete-action { color: #b46262; }
 form {
   margin-top: 23px;
 }

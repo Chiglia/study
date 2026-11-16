@@ -53,13 +53,13 @@ export class QuizStore {
     return this.patch({ questions: this.questions().filter(item => item.id !== id) }, true);
   }
 
-  start(): boolean {
-    return this.patch({ session: createSession(this.questions()) });
+  start(options?: { randomizeQuestions?: boolean; randomizeAnswers?: boolean; questionsPerPage?: number | 'all' }): boolean {
+    return this.patch({ session: createSession(this.questions(), options) });
   }
 
-  answer(option: number): void {
+  answer(option: number, id?: string): void {
     const session = this.session();
-    if (session) this.patch({ session: answerQuestion(session, option) });
+    if (session) this.patch({ session: answerQuestion(session, option, id) });
   }
 
   next(): void {

@@ -8,14 +8,14 @@ const questions = ['a', 'b', 'c'].map(id => ({
 const data = session => ({ version: 1, questions, session, results: [] });
 
 test('Fisher-Yates genera una permutazione senza duplicati e non cambia la raccolta', () => {
-  const session = createSession(questions, () => 0);
+  const session = createSession(questions, { random: () => 0 });
   assert.deepEqual(session.queue, ['b', 'c', 'a']);
   assert.deepEqual(questions.map(q => q.id), ['a', 'b', 'c']);
   assert.equal(new Set(session.queue).size, questions.length);
 });
 
 test('una domanda saltata ricompare solo dopo le altre domande in coda', () => {
-  let session = createSession(questions, () => 0.99);
+  let session = createSession(questions, { random: () => 0.99 });
   session = advanceQuestion(session);
   assert.deepEqual(session.queue, ['b', 'c', 'a']);
   session = advanceQuestion(answerQuestion(session, 0));
@@ -29,7 +29,7 @@ test('una domanda saltata ricompare solo dopo le altre domande in coda', () => {
 });
 
 test('feedback immediato e risposta definitiva, anche quando errata', () => {
-  const session = answerQuestion(createSession(questions, () => 0.99), 1);
+  const session = answerQuestion(createSession(questions, { random: () => 0.99 }), 1);
   assert.notEqual(session.answers.a, session.questions[0].correct);
   assert.throws(() => answerQuestion(session, 0));
   assert.ok(!advanceQuestion(session).queue.includes('a'));
@@ -53,7 +53,7 @@ test('una sola domanda saltata resta disponibile fino alla risposta', () => {
 });
 
 test('dati e avanzamento possono essere serializzati e ripristinati', () => {
-  const session = answerQuestion(createSession(questions, () => 0.99), 0);
+  const session = answerQuestion(createSession(questions, { random: () => 0.99 }), 0);
   assert.deepEqual(parseData(JSON.stringify(data(session))), data(session));
   const advanced = advanceQuestion(session);
   assert.deepEqual(parseData(JSON.stringify(data(advanced))).session, advanced);
@@ -68,7 +68,7 @@ test('rifiuta raccolte vuote, opzioni fuori intervallo e JSON corrotto', () => {
 });
 
 test('rifiuta dati persistenti con schema o invarianti non validi', () => {
-  const session = createSession(questions, () => 0.99);
+  const session = createSession(questions, { random: () => 0.99 });
   const invalid = [
     { ...data(null), version: 2 },
     { ...data(null), questions: [questions[0], questions[0]] },
@@ -84,10 +84,30 @@ test('rifiuta dati persistenti con schema o invarianti non validi', () => {
 });
 
 test('conteggio corrette e ripristino di un risultato completato', () => {
-  let session = createSession(questions, () => 0.99);
+  let session = createSession(questions, { random: () => 0.99 });
   for (const option of [0, 1, 0]) session = advanceQuestion(answerQuestion(session, option));
   const correct = session.questions.filter(q => session.answers[q.id] === q.correct).length;
   assert.equal(correct, 2);
   const saved = { ...data(null), results: [{ id: 'result', total: 3, correct, date: new Date().toISOString() }] };
   assert.deepEqual(parseData(JSON.stringify(saved)), saved);
+});
+
+test('le opzioni casuali aggiornano la risposta corretta senza mescolare le domande', () => {
+  const session = createSession(questions, {
+    randomizeQuestions: false,
+    randomizeAnswers: true,
+    random: () => 0,
+  });
+  assert.deepEqual(session.queue, ['a', 'b', 'c']);
+  assert.deepEqual(session.questions[0].options, ['Errata', 'Corretta']);
+  assert.equal(session.questions[0].correct, 1);
+  const answered = answerQuestion(session, 1);
+  assert.equal(answered.answers.a, answered.questions[0].correct);
+});
+
+test('l’ordine predefinito delle domande resta casuale e le risposte non cambiano', () => {
+  const session = createSession(questions, { random: () => 0 });
+  assert.deepEqual(session.queue, ['b', 'c', 'a']);
+  assert.deepEqual(session.questions[0].options, questions[0].options);
+  assert.equal(session.questions[0].correct, questions[0].correct);
 });

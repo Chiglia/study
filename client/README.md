@@ -13,10 +13,12 @@ Aprire `http://localhost:4200`. Per generare il sito statico: `npm run build`.
 
 ## Funzionamento
 
-- La dashboard mostra i test e i pulsanti Crea test e Cerca test, senza azioni per inserire domande o avviare sessioni.
-- Cerca test apre il catalogo con ricerca per nome o categoria e permette di aggiungere copie indipendenti dei test preimpostati alla raccolta locale. I nomi gia presenti ricevono un suffisso numerico.
+- La dashboard mostra i test e le azioni Crea test e Importa, senza azioni per inserire domande o avviare sessioni.
+- Cerca test nella barra superiore apre il catalogo con ricerca per nome o categoria e permette di aggiungere copie indipendenti dei test preimpostati alla raccolta locale. I nomi gia presenti ricevono un suffisso numerico.
+- Importa da file aggiunge alla raccolta un test personale da un file JSON. Usa il modello scaricabile dal pulsante e indica nome, domande, categoria, opzioni e indice della risposta corretta.
 - Crea test richiede un nome e apre la pagina dedicata `/test/:id`, dove aggiungere, cercare, filtrare e modificare le domande, rinominare o eliminare il test.
 - Il pulsante Play (o Riprendi test) si trova nella pagina di modifica e apre `/test/:id/svolgi`.
+- Il menu Opzioni permette di rinominare o eliminare il test e di scegliere ordine e numero di domande per schermata (1, 3, 5, 10 oppure tutte). La scelta viene salvata nella sessione e non cambia durante una ripresa.
 - La sidebar mostra I miei test come elenco sempre aperto, seguito dagli ultimi due test modificati. Creazione, rinomina e modifiche alle domande aggiornano l'ordine; navigazione e risposte no.
 - Ogni URL identifica il test: ricaricamento, link diretti e navigazione indietro ripristinano il contesto corretto. I precedenti percorsi `/domande` e `/test` reindirizzano al test selezionato, se presente.
 - Domande, avanzamento, risultati e statistiche sono indipendenti per ogni test. Passare da un test a un altro conserva il punto di entrambi e anche la selezione viene salvata.
@@ -24,7 +26,7 @@ Aprire `http://localhost:4200`. Per generare il sito statico: `npm run build`.
 - Creazione, modifica ed eliminazione di domande con 2–6 opzioni distinte e una sola risposta corretta.
 - Ogni nuova sessione mescola solo le domande del test selezionato con Fisher–Yates.
 - Selezionare una risposta la conferma immediatamente e mostra il feedback corretto/errato.
-- Avanti rimuove le domande risposte; una domanda saltata va in fondo alla coda.
+- Avanti rimuove le domande risposte nella schermata; quelle saltate vanno in fondo alla coda.
 - Le domande risposte non ricompaiono nello stesso test, anche dopo un errore.
 - Test, risposte, domande e risultati sono salvati in `localStorage` nella chiave `quizflow.data.v1`.
 - La chiave resta invariata per compatibilita; il contenuto ora usa lo schema `version: 2` con raccolte e selezione attiva. I dati dello schema precedente vengono migrati automaticamente in "Il mio primo test", conservando domande, test in corso e risultati. Se la migrazione non puo essere salvata, i dati originali restano intatti e viene mostrato un errore.
@@ -37,6 +39,10 @@ Aprire `http://localhost:4200`. Per generare il sito statico: `npm run build`.
 Il catalogo si trova in [public/test-catalog.json](public/test-catalog.json) ed e caricato all'apertura del modale. Per aggiungere un argomento, inserire un elemento nell'array `tests` con `id` univoco, `name` (massimo 100 caratteri) e `questions` non vuoto.
 
 Ogni domanda contiene `id` univoco nel test, `text`, `category`, da 2 a 6 stringhe in `options` e `correct`, indice della risposta corretta a partire da zero. Sessioni e risultati non appartengono al catalogo: ogni importazione parte senza avanzamento. Il catalogo viene validato prima dell'importazione e una scrittura locale fallita non modifica la raccolta.
+
+## Importare un test personale
+
+Dalla dashboard (**Importa**), seleziona un JSON basato sul modello `public/test-template.json`. Ogni domanda richiede `text`, `category`, da 2 a 6 `options` e `correct` (indice da zero). Gli identificativi vengono generati automaticamente; i nomi già presenti ricevono un suffisso numerico.
 
 ## Dati locali
 

@@ -1,0 +1,6 @@
+.import-dialog { max-width: 510px; }
+.import-dialog h2 { margin-top: 0; }
+.import-dialog label { display: block; margin: 22px 0 8px; font-size: 12px; font-weight: 600; }
+.import-dialog input { width: 100%; }
+.template-link { display: inline-block; margin-top: 8px; color: var(--purple); font-size: 12px; }
+.import-compact { padding: 10px 6px; color: #716880; }

@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { importCatalogTest, parseCatalog } from '../src/app/services/test-catalog.ts';
+import { parseUserTest } from '../src/app/services/test-file.ts';
 import {
   activeCollection,
   emptyLibrary,
@@ -79,4 +80,37 @@ test('il JSON pubblico contiene test validi e importabili', async () => {
   for (const preset of catalog) library = importCatalogTest(library, preset, createId);
   assert.equal(library.collections.length, catalog.length);
   assert.deepEqual(parseLibrary(JSON.stringify(library)), library);
+});
+
+test('importa un file personale senza id e valida le domande', () => {
+  const raw = JSON.stringify({
+    name: 'Il mio test',
+    questions: [{
+      text: 'Qual è la risposta?',
+      category: 'Generale',
+      options: ['Sì', 'No'],
+      correct: 0,
+    }],
+  });
+  const parsed = parseUserTest(raw, createId);
+  assert.equal(parsed.name, 'Il mio test');
+  assert.notEqual(parsed.id, parsed.questions[0].id);
+  assert.equal(parsed.questions[0].text, 'Qual è la risposta?');
+  assert.equal(importCatalogTest(emptyLibrary(), parsed, createId).collections[0].name, 'Il mio test');
+});
+
+test('rifiuta file personali con nome, domande o risposte non valide', () => {
+  for (const value of [
+    '{',
+    JSON.stringify({ name: ' ', questions: [preset.questions[0]] }),
+    JSON.stringify({ name: 'Vuoto', questions: [] }),
+    JSON.stringify({ name: 'Errato', questions: [{ ...preset.questions[0], correct: 9 }] }),
+  ]) {
+    assert.throws(() => parseUserTest(value, createId));
+  }
+});
+
+test('il modello scaricabile segue il formato di importazione', async () => {
+  const raw = await readFile(new URL('../public/test-template.json', import.meta.url), 'utf8');
+  assert.equal(parseUserTest(raw, createId).name, 'Il mio test');
 });

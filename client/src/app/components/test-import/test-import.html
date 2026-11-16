@@ -1,0 +1,27 @@
+<button [class]="compact() ? 'text-button import-compact' : 'button secondary'"
+  (click)="show()" [disabled]="store.blocked()" aria-label="Importa da file">
+  <i class="pi pi-upload" aria-hidden="true"></i> {{ compact() ? 'Importa' : 'Importa da file' }}
+</button>
+@if (open()) {
+  <div class="modal-backdrop" (click)="open.set(false)">
+    <section class="dialog import-dialog" appModalFocus role="dialog" aria-modal="true"
+      aria-labelledby="import-title" (click)="$event.stopPropagation()"
+      (keydown.escape)="open.set(false)">
+      <button class="icon-button dialog-close" aria-label="Chiudi importazione"
+        (click)="open.set(false)"><i class="pi pi-times"></i></button>
+      <span class="eyebrow">AGGIUNGI LE TUE DOMANDE</span>
+      <h2 id="import-title">Importa un test</h2>
+      <p class="muted">Scegli un file JSON con il nome del test e le domande. Il test verrà aggiunto alla tua raccolta.</p>
+      <a class="template-link" [href]="templateHref" download>Scarica un file di esempio</a>
+      <label for="test-file">File del test (.json)</label>
+      <input id="test-file" type="file" accept=".json,application/json"
+        (change)="importFile($event)" [disabled]="loading()">
+      @if (loading()) { <p class="muted" role="status">Importazione in corso...</p> }
+      @if (error()) { <p class="form-error" role="alert">{{ error() }}</p> }
+      @if (store.error()) { <p class="form-error" role="alert">{{ store.error() }}</p> }
+      <div class="dialog-actions">
+        <button class="button secondary" (click)="open.set(false)">Chiudi</button>
+      </div>
+    </section>
+  </div>
+}

@@ -19,17 +19,24 @@ export class Home {
   readonly categories = categories;
   readonly search = signal('');
   readonly category = signal('');
+  readonly randomizeQuestions = signal(true);
+  readonly randomizeAnswers = signal(false);
+  readonly questionsPerPage = signal<number | 'all'>(1);
+  readonly pageSizes = [1, 3, 5, 10];
+  readonly currentPageSize = computed(() => {
+    const session = this.store.session();
+    return session ? session.questionsPerPage ?? 1 : this.questionsPerPage();
+  });
+  readonly legacyPageSize = computed(() => {
+    const size = this.store.session()?.questionsPerPage;
+    return typeof size === 'number' && !this.pageSizes.includes(size) ? size : null;
+  });
   readonly editorOpen = signal(false);
   readonly editing = signal<Question | null>(null);
   readonly deleting = signal<Question | null>(null);
   readonly filtered = computed(() => this.store.questions().filter(question =>
     (!this.category() || question.category === this.category())
     && question.text.toLocaleLowerCase().includes(this.search().trim().toLocaleLowerCase())));
-  readonly average = computed(() => {
-    const results = this.store.results();
-    const total = results.reduce((sum, result) => sum + result.total, 0);
-    return total ? Math.round(results.reduce((sum, result) => sum + result.correct, 0) / total * 100) : null;
-  });
   private readonly activeId = computed(() => this.store.active()?.id);
 
   constructor() {
@@ -49,7 +56,11 @@ export class Home {
   }
 
   start(): void {
-    if (this.store.session() || this.store.start()) {
+    if (this.store.session() || this.store.start({
+      randomizeQuestions: this.randomizeQuestions(),
+      randomizeAnswers: this.randomizeAnswers(),
+      questionsPerPage: this.questionsPerPage(),
+    })) {
       void this.router.navigate(['/test', this.store.active()?.id, 'svolgi']);
     }
   }
