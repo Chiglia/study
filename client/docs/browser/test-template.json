@@ -1,0 +1,11 @@
+{
+  "name": "Il mio test",
+  "questions": [
+    {
+      "text": "Qual è la risposta corretta?",
+      "category": "Generale",
+      "options": ["Prima risposta", "Seconda risposta"],
+      "correct": 0
+    }
+  ]
+}
