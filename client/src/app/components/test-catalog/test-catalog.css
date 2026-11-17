@@ -1,10 +1,3 @@
-.catalog-dialog {
-  max-width: 620px;
-}
-.catalog-dialog h2 {
-  margin-top: 0;
-  letter-spacing: 0;
-}
 label {
   display: block;
   font-size: 12px;
@@ -65,9 +58,6 @@ h3 {
   font-size: 13px;
   margin-top: 18px;
   overflow-wrap: anywhere;
-}
-.catalog-dialog .dialog-actions {
-  margin-top: 8px;
 }
 @media (max-width: 380px) {
   .catalog-list li {

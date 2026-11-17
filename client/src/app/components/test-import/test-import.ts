@@ -7,10 +7,11 @@ import { ModalFocus } from '../../services/modal-focus';
 import { parsePdfTest, PdfTestPreview } from '../../services/pdf-test-parser';
 import { readPdfLines } from '../../services/pdf-test-reader';
 import { CatalogTest } from '../../services/test-catalog';
+import { TestCatalog } from '../test-catalog/test-catalog';
 
 @Component({
   selector: 'app-test-import',
-  imports: [ModalFocus],
+  imports: [ModalFocus, TestCatalog],
   templateUrl: './test-import.html',
   styleUrl: './test-import.css',
 })
@@ -21,12 +22,14 @@ export class TestImport {
   readonly pdfTemplateHref = new URL('test-template.pdf', this.templateHref).href;
   private readonly router = inject(Router);
   readonly open = signal(false);
+  readonly source = signal<'catalog' | 'file'>('file');
   readonly error = signal('');
   readonly loading = signal(false);
   readonly preview = signal<PdfTestPreview | null>(null);
   private request = 0;
 
   show(): void {
+    this.source.set('file');
     this.error.set('');
     this.preview.set(null);
     this.open.set(true);
@@ -37,6 +40,17 @@ export class TestImport {
     this.loading.set(false);
     this.preview.set(null);
     this.open.set(false);
+  }
+
+  navigateTabs(event: KeyboardEvent): void {
+    if (this.loading() || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+    const source = event.key === 'Home' ? 'file' : event.key === 'End' ? 'catalog'
+      : this.source() === 'file' ? 'catalog' : 'file';
+    this.source.set(source);
+    if (event.currentTarget instanceof HTMLElement) {
+      event.currentTarget.querySelector<HTMLButtonElement>(`#import-${source}-tab`)?.focus();
+    }
   }
 
   save(test: CatalogTest): void {

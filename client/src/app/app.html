@@ -7,29 +7,52 @@
     </nav>
     <app-test-navigation />
     <div class="sidebar-bottom">
-      <div class="local-note"><span class="local-icon"><i class="pi pi-shield"></i></span><strong>Il tuo studio, solo tuo.</strong><p>I dati restano nel tuo browser.<br>Nessun account, nessun cloud.</p><span class="local-status"><span></span> Salvataggio locale</span></div>
       <button class="help-button" (click)="help.set(true)"><i class="pi pi-question-circle"></i> Come funziona <i class="pi pi-arrow-up-right"></i></button>
       <div class="sidebar-footer">Fatto per imparare, un quiz alla volta.</div>
     </div>
   </aside>
   <div class="main-layout">
-    <header class="topbar"><span class="topbar-message">Il tuo piccolo spazio per grandi progressi.</span><div><button class="catalog-button" (click)="catalogOpen.set(true)" [disabled]="store.blocked()"><i class="pi pi-search" aria-hidden="true"></i> Cerca test</button><span class="avatar" aria-label="Profilo locale">TU</span></div></header>
+    <header class="topbar"><span class="local-status"><span aria-hidden="true"></span> Salvataggio locale</span></header>
     @if (store.error()) {
       <div class="storage-error" role="alert"><i class="pi pi-exclamation-triangle"></i><span>{{ store.error() }}</span>@if (store.blocked()) { <button class="button secondary" (click)="reset()">Ripristina dati</button> }</div>
     }
     <main><router-outlet /></main>
-    <footer class="main-footer"><span><i class="pi pi-lock"></i> Le tue domande non lasciano mai questo browser.</span><span>QuizFlow <span class="footer-dot">•</span> Impara al tuo ritmo</span></footer>
+    <footer class="main-footer"><span><i class="pi pi-code" aria-hidden="true"></i> Made by Chiglia</span><span>QuizFlow <span class="footer-dot">•</span><a class="github-link" href="https://github.com/Chiglia/study" target="_blank" rel="noopener noreferrer" aria-label="Repository QuizFlow su GitHub (si apre in una nuova scheda)" title="Repository su GitHub"><i class="pi pi-github" aria-hidden="true"></i></a></span></footer>
   </div>
 </div>
-@if (catalogOpen()) { <app-test-catalog (closed)="catalogOpen.set(false)" /> }
 @if (help()) {
   <div class="modal-backdrop" (click)="help.set(false)">
-    <section class="dialog help-dialog" role="dialog" aria-modal="true" aria-labelledby="help-title" appModalFocus (click)="$event.stopPropagation()" (keydown.escape)="help.set(false)">
-      <button class="icon-button dialog-close" autofocus aria-label="Chiudi guida" (click)="help.set(false)"><i class="pi pi-times"></i></button>
-      <span class="eyebrow">PICCOLI PASSI, GRANDI PROGRESSI</span><h2 id="help-title">Il tuo prossimo traguardo inizia qui.</h2>
-      <ol class="help-steps"><li><strong>Crea le tue domande</strong><p>Inserisci da 2 a 6 opzioni e indica quella corretta.</p></li><li><strong>Mettiti alla prova</strong><p>Le domande vengono mescolate a ogni nuovo test. Una risposta selezionata e definitiva: vedrai subito il risultato.</p></li><li><strong>Segui il tuo ritmo</strong><p>Premi Avanti senza rispondere per spostare la domanda in fondo. Le domande risposte non ritornano.</p></li></ol>
-      <p class="muted">Dalla dashboard premi Crea test e scegli un nome: arriverai alla pagina in cui aggiungere le domande e avviare il test con Play. Nella sidebar trovi tutti i tuoi test e gli ultimi due modificati. Ogni test mantiene progressi e risultati separati. Cancellando i dati del browser perderai tutti i test.</p>
-      <button class="button primary" (click)="help.set(false)">Tutto chiaro <i class="pi pi-check"></i></button>
+    <section class="dialog help-dialog" role="dialog" aria-modal="true" aria-labelledby="help-title" aria-describedby="help-description" appModalFocus (click)="$event.stopPropagation()" (keydown.escape)="help.set(false)">
+      <header class="help-header">
+        <button class="icon-button dialog-close" autofocus aria-label="Chiudi guida" (click)="help.set(false)"><i class="pi pi-times" aria-hidden="true"></i></button>
+        <span class="eyebrow">LA TUA GUIDA A QUIZFLOW</span>
+        <h2 id="help-title">Tre passi per iniziare.</h2>
+        <p id="help-description">Dalle prime domande ai tuoi prossimi progressi, al tuo ritmo.</p>
+      </header>
+      <div class="help-body" tabindex="0" role="region" aria-label="Guida a QuizFlow">
+        <ol class="help-steps">
+          <li>
+            <span class="help-step-number" aria-hidden="true">01</span>
+            <div><h3>Crea o importa un test</h3><p>Premi <strong>Crea test</strong> e scegli un nome, oppure usa <strong>Importa</strong> per partire dal catalogo locale o da un file JSON o PDF.</p></div>
+          </li>
+          <li>
+            <span class="help-step-number" aria-hidden="true">02</span>
+            <div><h3>Aggiungi le domande e parti</h3><p>Nella pagina del test inserisci da 2 a 6 opzioni e indica quella corretta. Da <strong>Opzioni</strong> scegli ordine e domande per schermata, poi premi <strong>Play</strong>.</p></div>
+          </li>
+          <li>
+            <span class="help-step-number" aria-hidden="true">03</span>
+            <div><h3>Allenati, una risposta alla volta</h3><p>Ogni risposta &egrave; definitiva e mostra subito il risultato. Con <strong>Avanti</strong> le domande saltate tornano in fondo; quelle risposte non ritornano.</p></div>
+          </li>
+        </ol>
+        <div class="help-tip"><i class="pi pi-bookmark" aria-hidden="true"></i><p>Ritrovi i tuoi test e gli ultimi modificati nella sidebar. Ogni test conserva progressi e risultati separati: puoi riprendere quando vuoi.</p></div>
+        <aside class="local-note" aria-labelledby="privacy-title">
+          <span class="local-icon"><i class="pi pi-shield" aria-hidden="true"></i></span>
+          <div><h3 id="privacy-title">Il tuo studio, solo tuo.</h3><p>I dati restano nel tuo browser. Nessun account, nessun cloud.</p><p class="local-warning">Cancellando i dati del browser perderai tutti i test.</p></div>
+        </aside>
+      </div>
+      <footer class="help-actions">
+        <button class="button primary" (click)="help.set(false)">Tutto chiaro <i class="pi pi-check" aria-hidden="true"></i></button>
+      </footer>
     </section>
   </div>
 }

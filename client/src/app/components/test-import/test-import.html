@@ -1,37 +1,112 @@
-<button [class]="compact() ? 'text-button import-compact' : 'button secondary'"
-  (click)="show()" [disabled]="store.blocked()" aria-label="Importa da file">
-  <i class="pi pi-upload" aria-hidden="true"></i> {{ compact() ? 'Importa' : 'Importa da file' }}
+<button
+  [class]="compact() ? 'text-button import-compact' : 'button secondary'"
+  (click)="show()"
+  [disabled]="store.blocked()"
+  aria-label="Importa test"
+>
+  <i class="pi pi-upload" aria-hidden="true"></i> Importa
 </button>
 @if (open()) {
   <div class="modal-backdrop" (click)="close()">
-    <section class="dialog import-dialog" appModalFocus role="dialog" aria-modal="true"
-      aria-labelledby="import-title" (click)="$event.stopPropagation()"
-      (keydown.escape)="close()">
-      <button class="icon-button dialog-close" aria-label="Chiudi importazione"
-        (click)="close()"><i class="pi pi-times"></i></button>
+    <section
+      class="dialog import-dialog"
+      appModalFocus
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="import-title"
+      (click)="$event.stopPropagation()"
+      (keydown.escape)="close()"
+    >
+      <button class="icon-button dialog-close" aria-label="Chiudi importazione" (click)="close()">
+        <i class="pi pi-times"></i>
+      </button>
       <span class="eyebrow">AGGIUNGI LE TUE DOMANDE</span>
       <h2 id="import-title">Importa un test</h2>
-      <p class="muted">Scegli un file JSON o PDF. Nel PDF indica la risposta corretta in grassetto e usa domande numerate con risposte a., b., c. e d.</p>
-      <div class="template-links" aria-label="File di esempio">
-        <a [href]="templateHref" download>Scarica esempio JSON</a>
-        <a [href]="pdfTemplateHref" download>Scarica esempio PDF</a>
+      <div
+        class="import-sources"
+        role="tablist"
+        aria-label="Origine del test"
+        (keydown)="navigateTabs($event)"
+      >
+        <button
+          id="import-file-tab"
+          class="import-tab"
+          role="tab"
+          aria-controls="import-source-panel"
+          [attr.aria-selected]="source() === 'file'"
+          [tabIndex]="source() === 'file' ? 0 : -1"
+          (click)="source.set('file')"
+          [disabled]="loading()"
+          autofocus
+        >
+          <i class="pi pi-file" aria-hidden="true"></i> Da file
+        </button>
+        <button
+          id="import-catalog-tab"
+          class="import-tab"
+          role="tab"
+          aria-controls="import-source-panel"
+          [attr.aria-selected]="source() === 'catalog'"
+          [tabIndex]="source() === 'catalog' ? 0 : -1"
+          (click)="source.set('catalog')"
+          [disabled]="loading()"
+        >
+          <i class="pi pi-search" aria-hidden="true"></i> Dal catalogo
+        </button>
       </div>
-      <label for="test-file">File del test (.json o .pdf)</label>
-      <input id="test-file" type="file" accept=".json,.pdf,application/json,application/pdf"
-        (change)="importFile($event)" [disabled]="loading()">
-      @if (loading()) { <p class="muted" role="status">Importazione in corso...</p> }
-      @if (error()) { <p class="form-error" role="alert">{{ error() }}</p> }
-      @if (preview(); as preview) {
-        <div class="import-preview" role="status">
-          <strong>{{ preview.test.name }}</strong>
-          <p>{{ preview.test.questions.length }} domande pronte · {{ preview.skipped }} escluse</p>
-          <p>Le domande senza almeno due risposte o senza una sola risposta in grassetto sono escluse. Categoria: Generale.</p>
-        </div>
-      }
+      <div
+        id="import-source-panel"
+        role="tabpanel"
+        [attr.aria-labelledby]="'import-' + source() + '-tab'"
+      >
+        @if (source() === 'catalog') {
+          <p class="muted">
+            Cerca un test gi&agrave; pronto nel catalogo locale e aggiungilo ai tuoi test.
+          </p>
+          <app-test-catalog />
+        } @else {
+          <p class="muted">
+            Scegli un file JSON o PDF. Nel PDF indica la risposta corretta in grassetto e usa
+            domande numerate con risposte a., b., c. e d.
+          </p>
+          <div class="template-links" aria-label="File di esempio">
+            <a [href]="templateHref" download>Scarica esempio JSON</a>
+            <a [href]="pdfTemplateHref" download>Scarica esempio PDF</a>
+          </div>
+          <label for="test-file">File del test (.json o .pdf)</label>
+          <input
+            id="test-file"
+            type="file"
+            accept=".json,.pdf,application/json,application/pdf"
+            (change)="importFile($event)"
+            [disabled]="loading()"
+          />
+          @if (loading()) {
+            <p class="muted" role="status">Importazione in corso...</p>
+          }
+          @if (error()) {
+            <p class="form-error" role="alert">{{ error() }}</p>
+          }
+          @if (preview(); as preview) {
+            <div class="import-preview" role="status">
+              <strong>{{ preview.test.name }}</strong>
+              <p>
+                {{ preview.test.questions.length }} domande pronte · {{ preview.skipped }} escluse
+              </p>
+              <p>
+                Le domande senza almeno due risposte o senza una sola risposta in grassetto sono
+                escluse. Categoria: Generale.
+              </p>
+            </div>
+          }
+        }
+      </div>
       <div class="dialog-actions">
         <button class="button secondary" (click)="close()">Chiudi</button>
-        @if (preview(); as preview) {
-          <button class="button primary" (click)="save(preview.test)" [disabled]="store.blocked()">Importa test</button>
+        @if (source() === 'file' && preview(); as preview) {
+          <button class="button primary" (click)="save(preview.test)" [disabled]="store.blocked()">
+            Importa test
+          </button>
         }
       </div>
     </section>

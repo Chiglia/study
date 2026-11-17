@@ -1,18 +1,16 @@
-import { Component, computed, inject, output, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ModalFocus } from '../../services/modal-focus';
 import { QuizStore } from '../../services/quiz-store';
 import { CatalogTest, parseCatalog } from '../../services/test-catalog';
 
 @Component({
     selector: 'app-test-catalog',
-    imports: [FormsModule, ModalFocus],
+    imports: [FormsModule],
     templateUrl: './test-catalog.html',
     styleUrl: './test-catalog.css',
 })
 export class TestCatalog {
     readonly store = inject(QuizStore);
-    readonly closed = output<void>();
     readonly tests = signal<CatalogTest[]>([]);
     readonly query = signal('');
     readonly loading = signal(true);

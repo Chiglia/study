@@ -3,18 +3,16 @@ import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/rou
 import { QuizStore } from './services/quiz-store';
 import { ModalFocus } from './services/modal-focus';
 import { TestNavigation } from './components/test-navigation/test-navigation';
-import { TestCatalog } from './components/test-catalog/test-catalog';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, ModalFocus, TestNavigation, TestCatalog],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, ModalFocus, TestNavigation],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
 export class App {
   readonly store = inject(QuizStore);
   readonly help = signal(false);
-  readonly catalogOpen = signal(false);
   private readonly router = inject(Router);
 
   reset(): void {
