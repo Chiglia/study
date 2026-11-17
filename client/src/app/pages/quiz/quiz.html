@@ -1,34 +1,36 @@
-<div class="quiz-heading"><a class="text-button" [routerLink]="['/test', store.active()?.id]"><i class="pi pi-arrow-left"></i> Torna al test</a><h1>{{ store.active()?.name }}</h1><p>Nessun timer, nessuna pressione. Domande e risultati del test selezionato.</p></div>
-@if (store.session(); as session) {
-  @if (visibleQuestions().length) {
-    <section class="quiz-container">
-      <div class="progress-label"><span><i class="pi pi-bolt"></i> TEST IN CORSO</span><strong>{{ answered() }} / {{ session.questions.length }} risposte</strong></div>
-      <div class="progress-track" role="progressbar" aria-label="Domande risposte" [attr.aria-valuenow]="answered()" aria-valuemin="0" [attr.aria-valuemax]="session.questions.length"><div [style.width.%]="progress()"></div></div>
-      @for (question of visibleQuestions(); track question.id) {
-      <article class="test-card">
-        <div class="question-meta"><span class="category-label">{{ question.category }}</span><span>{{ remaining() }} ancora da rispondere</span></div>
-        <h2>{{ question.text }}</h2><p class="question-instruction">Scegli una risposta. Il feedback arriva subito.</p>
-        <div class="answer-options" role="group" aria-label="Opzioni di risposta">
-          @for (option of question.options; track $index; let i = $index) {
-            <button class="answer-option" [class.answer-correct]="selected(question.id) !== null && i === question.correct" [class.answer-wrong]="selected(question.id) === i && i !== question.correct" [disabled]="selected(question.id) !== null || store.blocked()" (click)="store.answer(i, question.id)">
-              <span class="answer-letter">{{ 'ABCDEF'[i] }}</span><span class="answer-text">{{ option }}</span>
-              @if (selected(question.id) !== null && i === question.correct) { <span class="answer-status">Corretta <i class="pi pi-check-circle"></i></span> } @else if (selected(question.id) === i) { <span class="answer-status">La tua risposta <i class="pi pi-times-circle"></i></span> } @else { <span class="answer-circle"></span> }
-            </button>
-          }
-        </div>
-        <div aria-live="polite">
-          @if (selected(question.id) !== null) {
-            <div class="feedback" [class.incorrect]="selected(question.id) !== question.correct"><i [class]="selected(question.id) === question.correct ? 'pi pi-check-circle' : 'pi pi-info-circle'"></i><div><strong>{{ selected(question.id) === question.correct ? 'Esatto, ottimo lavoro!' : 'Anche un errore è un passo avanti.' }}</strong><p>{{ selected(question.id) === question.correct ? 'Questa la sai! Continua così.' : 'La risposta corretta è: ' + question.options[question.correct] }}</p></div></div>
-          }
-        </div>
-      </article>
-      }
-      <div class="test-actions"><a class="text-button" [routerLink]="['/test', store.active()?.id]"><i class="pi pi-arrow-left"></i> Continua più tardi</a><button class="button primary" (click)="store.next()" [disabled]="store.blocked()">{{ pageComplete() ? 'Vedi risultato' : 'Avanti' }}<i class="pi pi-arrow-right"></i></button></div>
-      <p class="quiz-tip"><i class="pi pi-info-circle"></i> Le risposte sono salvate subito. Le domande saltate tornano in coda.</p>
-    </section>
+<ng-container *transloco="let t">
+  <div class="quiz-heading"><a class="text-button" [routerLink]="['/test', store.active()?.id]"><i class="pi pi-arrow-left"></i> {{ t('quiz.backToTest') }}</a><h1>{{ store.active()?.name }}</h1><p>{{ t('quiz.description') }}</p></div>
+  @if (store.session(); as session) {
+    @if (visibleQuestions().length) {
+      <section class="quiz-container">
+        <div class="progress-label"><span><i class="pi pi-bolt"></i> {{ t('quiz.inProgress') }}</span><strong>{{ t('quiz.answers', {answered: answered(), total: session.questions.length}) }}</strong></div>
+        <div class="progress-track" role="progressbar" [attr.aria-label]="t('quiz.answeredQuestions')" [attr.aria-valuenow]="answered()" aria-valuemin="0" [attr.aria-valuemax]="session.questions.length"><div [style.width.%]="progress()"></div></div>
+        @for (question of visibleQuestions(); track question.id) {
+          <article class="test-card">
+            <div class="question-meta"><span class="category-label">{{ categories.includes(question.category) ? t('categories.' + question.category) : question.category }}</span><span>{{ t('quiz.remaining', {count: remaining()}) }}</span></div>
+            <h2>{{ question.text }}</h2><p class="question-instruction">{{ t('quiz.instruction') }}</p>
+            <div class="answer-options" role="group" [attr.aria-label]="t('quiz.answerOptions')">
+              @for (option of question.options; track $index; let i = $index) {
+                <button class="answer-option" [class.answer-correct]="selected(question.id) !== null && i === question.correct" [class.answer-wrong]="selected(question.id) === i && i !== question.correct" [disabled]="selected(question.id) !== null || store.blocked()" (click)="store.answer(i, question.id)">
+                  <span class="answer-letter">{{ 'ABCDEF'[i] }}</span><span class="answer-text">{{ option }}</span>
+                  @if (selected(question.id) !== null && i === question.correct) { <span class="answer-status">{{ t('quiz.correct') }} <i class="pi pi-check-circle"></i></span> } @else if (selected(question.id) === i) { <span class="answer-status">{{ t('quiz.yourAnswer') }} <i class="pi pi-times-circle"></i></span> } @else { <span class="answer-circle"></span> }
+                </button>
+              }
+            </div>
+            <div aria-live="polite">
+              @if (selected(question.id) !== null) {
+                <div class="feedback" [class.incorrect]="selected(question.id) !== question.correct"><i [class]="selected(question.id) === question.correct ? 'pi pi-check-circle' : 'pi pi-info-circle'"></i><div><strong>{{ selected(question.id) === question.correct ? t('quiz.right') : t('quiz.wrong') }}</strong><p>{{ selected(question.id) === question.correct ? t('quiz.rightFeedback') : t('quiz.correctAnswer', {answer: question.options[question.correct]}) }}</p></div></div>
+              }
+            </div>
+          </article>
+        }
+        <div class="test-actions"><a class="text-button" [routerLink]="['/test', store.active()?.id]"><i class="pi pi-arrow-left"></i> {{ t('quiz.continueLater') }}</a><button class="button primary" (click)="store.next()" [disabled]="store.blocked()">{{ pageComplete() ? t('quiz.seeResult') : t('quiz.next') }}<i class="pi pi-arrow-right"></i></button></div>
+        <p class="quiz-tip"><i class="pi pi-info-circle"></i> {{ t('quiz.savedTip') }}</p>
+      </section>
+    }
+  } @else if (result(); as result) {
+    <section class="result-card"><div class="result-icon"><i class="pi pi-trophy"></i></div><span class="eyebrow">{{ t('quiz.resultEyebrow') }}</span><h2>{{ t('quiz.completedTitle') }}</h2><p class="muted">{{ t('quiz.completedDescription') }}</p><div class="score">{{ score() }}<span>%</span></div><p class="score-detail"><strong>{{ t('quiz.correctCount', {correct: result.correct, total: result.total}) }}</strong></p><div class="result-breakdown"><span><i class="pi pi-check-circle"></i> {{ t('quiz.correctAnswers', {count: result.correct}) }}</span><span><i class="pi pi-times-circle"></i> {{ t('quiz.wrongAnswers', {count: result.total - result.correct}) }}</span></div><p class="result-date">{{ t('quiz.lastTest', {date: (result.date | date:'dd/MM/yyyy, HH:mm')}) }}</p><div class="result-actions"><a class="button secondary" routerLink="/">{{ t('quiz.dashboard') }}</a><a class="button primary" [routerLink]="['/test', store.active()?.id]">{{ t('quiz.test') }}</a></div><p class="quiz-tip">{{ t('quiz.continueTip') }}</p></section>
+  } @else {
+    <section class="result-card"><div class="result-icon"><i class="pi pi-folder"></i></div><span class="eyebrow">{{ t('quiz.startEyebrow') }}</span><h2>{{ t('quiz.prepareTitle') }}</h2><p class="muted">{{ t('quiz.prepareDescription') }}</p><div class="result-actions"><a class="button primary" [routerLink]="['/test', store.active()?.id]">{{ t('quiz.openTest') }}</a></div></section>
   }
-} @else if (result(); as result) {
-  <section class="result-card"><div class="result-icon"><i class="pi pi-trophy"></i></div><span class="eyebrow">UN ALTRO PASSO AVANTI</span><h2>Test completato. Ben fatto!</h2><p class="muted">Ogni risposta è un’occasione per imparare qualcosa.</p><div class="score">{{ score() }}<span>%</span></div><p class="score-detail"><strong>{{ result.correct }}</strong> risposte corrette su <strong>{{ result.total }}</strong></p><div class="result-breakdown"><span><i class="pi pi-check-circle"></i> {{ result.correct }} corrette</span><span><i class="pi pi-times-circle"></i> {{ result.total - result.correct }} errate</span></div><p class="result-date">Ultimo test · {{ result.date | date:'dd/MM/yyyy, HH:mm' }}</p><div class="result-actions"><a class="button secondary" routerLink="/">Torna alla dashboard</a><a class="button primary" [routerLink]="['/test', store.active()?.id]">Torna al test</a></div><p class="quiz-tip">Dalla pagina del test puoi modificare le domande o avviare una nuova sessione con Play.</p></section>
-} @else {
-  <section class="result-card"><div class="result-icon"><i class="pi pi-folder"></i></div><span class="eyebrow">SI PARTE DA QUI</span><h2>Prepara il tuo test.</h2><p class="muted">Aggiungi le domande e avvia la sessione con Play dalla pagina del test.</p><div class="result-actions"><a class="button primary" [routerLink]="['/test', store.active()?.id]">Apri il test</a></div></section>
-}
+</ng-container>

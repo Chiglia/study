@@ -1,7 +1,9 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { Question, QuizCollection, QuizLibrary } from './quiz.models';
 import { advanceQuestion, answerQuestion, createSession } from './quiz-state';
 import { CatalogTest, importCatalogTest } from './test-catalog';
+import { TranslocoService } from '@jsverse/transloco';
+import { translateError } from './translate-error';
 import {
   activeCollection, deleteCollection, emptyLibrary, parseLibrary,
   recentCollections, saveCollection, selectCollection, updateCollection,
@@ -9,6 +11,7 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class QuizStore {
+  private readonly transloco = inject(TranslocoService);
   private readonly key = 'quizflow.data.v1';
   private readonly data = signal<QuizLibrary>(emptyLibrary());
   readonly error = signal('');
@@ -35,7 +38,7 @@ export class QuizStore {
       }
     } catch (error) {
       console.error('QuizFlow: lettura localStorage non riuscita', error);
-      this.error.set('Impossibile leggere i dati locali. Non verranno sovrascritti. Puoi riprovare ricaricando la pagina o ripristinarli.');
+      this.error.set(this.transloco.translate('errors.storageRead'));
       this.blocked.set(true);
     }
   }
@@ -98,7 +101,7 @@ export class QuizStore {
       return this.persist(change());
     } catch (error) {
       console.error('QuizFlow: modifica test non riuscita', error);
-      this.error.set(error instanceof Error ? error.message : 'Impossibile modificare il test.');
+      this.error.set(translateError(error, this.transloco));
       return false;
     }
   }
@@ -115,7 +118,7 @@ export class QuizStore {
       this.error.set('');
     } catch (error) {
       console.error('QuizFlow: ripristino localStorage non riuscito', error);
-      this.error.set('Il browser non consente di ripristinare i dati. Controlla le impostazioni di archiviazione.');
+      this.error.set(this.transloco.translate('errors.storageReset'));
     }
   }
 
@@ -128,7 +131,7 @@ export class QuizStore {
       return true;
     } catch (error) {
       console.error('QuizFlow: salvataggio localStorage non riuscito', error);
-      this.error.set('Salvataggio non riuscito. Lo spazio potrebbe essere esaurito o il browser impedisce l’archiviazione. La modifica non è stata applicata.');
+      this.error.set(this.transloco.translate('errors.storageWrite'));
       return false;
     }
   }

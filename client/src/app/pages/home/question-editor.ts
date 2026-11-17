@@ -1,4 +1,5 @@
 import { Component, inject, input, OnInit, output } from '@angular/core';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { FormsModule } from '@angular/forms';
 import { categories, Question } from '../../services/quiz.models';
 import { QuizStore } from '../../services/quiz-store';
@@ -6,7 +7,7 @@ import { ModalFocus } from '../../services/modal-focus';
 
 @Component({
   selector: 'app-question-editor',
-  imports: [FormsModule, ModalFocus],
+  imports: [FormsModule, ModalFocus, TranslocoDirective],
   templateUrl: './question-editor.html',
   styleUrl: './question-editor.css',
 })

@@ -4,10 +4,11 @@ import { Router } from '@angular/router';
 import { QuizStore } from '../../services/quiz-store';
 import { ModalFocus } from '../../services/modal-focus';
 import { TestImport } from '../test-import/test-import';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-test-selector',
-  imports: [FormsModule, ModalFocus, TestImport],
+  imports: [FormsModule, ModalFocus, TestImport, TranslocoDirective],
   templateUrl: './test-selector.html',
   styleUrl: './test-selector.css',
 })
@@ -29,7 +30,7 @@ export class TestSelector {
 
   save(): void {
     if (!this.name.trim()) {
-      this.validation = 'Inserisci un nome per il test.';
+      this.validation = 'selector.nameRequired';
       return;
     }
     if (this.store.saveTest(this.name, this.mode() === 'rename' ? this.targetId : undefined)) {

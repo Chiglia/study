@@ -2,15 +2,17 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { QuizStore } from '../../services/quiz-store';
 import { CatalogTest, parseCatalog } from '../../services/test-catalog';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 
 @Component({
     selector: 'app-test-catalog',
-    imports: [FormsModule],
+    imports: [FormsModule, TranslocoDirective],
     templateUrl: './test-catalog.html',
     styleUrl: './test-catalog.css',
 })
 export class TestCatalog {
     readonly store = inject(QuizStore);
+    private readonly transloco = inject(TranslocoService);
     readonly tests = signal<CatalogTest[]>([]);
     readonly query = signal('');
     readonly loading = signal(true);
@@ -33,10 +35,10 @@ export class TestCatalog {
         this.error.set('');
         try {
             const response = await fetch(new URL('test-catalog.json', document.baseURI));
-            if (!response.ok) throw new Error('Catalogo non disponibile.');
+            if (!response.ok) throw new Error(this.transloco.translate('errors.catalogUnavailable'));
             this.tests.set(parseCatalog(await response.json()));
         } catch {
-            this.error.set('Impossibile caricare il catalogo dei test. Riprova.');
+            this.error.set(this.transloco.translate('errors.catalogLoad'));
         } finally {
             this.loading.set(false);
         }
@@ -47,7 +49,7 @@ export class TestCatalog {
         this.message.set('');
         if (this.store.importTest(test)) {
             this.added.update(ids => new Set([...ids, test.id]));
-            this.message.set(`"${this.store.active()?.name}" aggiunto ai tuoi test.`);
+            this.message.set(this.transloco.translate('catalog.addedMessage', { name: this.store.active()?.name }));
         }
     }
 

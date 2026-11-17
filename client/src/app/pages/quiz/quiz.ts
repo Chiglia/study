@@ -1,17 +1,20 @@
 import { Component, computed, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { RouterLink } from '@angular/router';
 import { QuizStore } from '../../services/quiz-store';
 import { pageSize } from '../../services/quiz-state';
+import { categories } from '../../services/quiz.models';
 
 @Component({
   selector: 'app-quiz',
-  imports: [RouterLink, DatePipe],
+  imports: [RouterLink, DatePipe, TranslocoDirective],
   templateUrl: './quiz.html',
   styleUrl: './quiz.css',
 })
 export class Quiz {
   readonly store = inject(QuizStore);
+  readonly categories = categories;
   readonly visibleQuestions = computed(() => {
     const session = this.store.session();
     if (!session) return [];

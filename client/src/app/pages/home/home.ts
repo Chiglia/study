@@ -1,4 +1,5 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { categories, Question } from '../../services/quiz.models';
@@ -9,7 +10,7 @@ import { TestSelector } from '../../components/test-selector/test-selector';
 
 @Component({
   selector: 'app-home',
-  imports: [FormsModule, QuestionEditor, ModalFocus, TestSelector],
+  imports: [FormsModule, QuestionEditor, ModalFocus, TestSelector, TranslocoDirective],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })

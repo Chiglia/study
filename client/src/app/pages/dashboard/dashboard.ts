@@ -1,12 +1,13 @@
 import { Component, computed, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { QuizStore } from '../../services/quiz-store';
 import { TestSelector } from '../../components/test-selector/test-selector';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [DatePipe, RouterLink, TestSelector],
+  imports: [DatePipe, RouterLink, TestSelector, TranslocoDirective],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })

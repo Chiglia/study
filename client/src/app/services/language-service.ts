@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { getBrowserLang, Translation, TranslocoService } from '@jsverse/transloco';
+import { getBrowserLang, TranslocoService } from '@jsverse/transloco';
 import { PrimeNG } from 'primeng/config';
 
 @Injectable({
@@ -13,44 +13,39 @@ export class LanguageService {
   private readonly fallbackLang = 'it';
 
   constructor() {
-    this.init();
-  }
-
-  private init() {
-    const lang = this.determineLanguage();
-    this.setLanguage(lang);
+    this.applyLanguage(this.determineLanguage());
   }
 
   private determineLanguage(): string {
-    // 1. Priorità al localStorage
-    const savedLang = localStorage.getItem('user-lang');
-    if (savedLang && this.availableLangs.includes(savedLang)) {
-      return savedLang;
+    try {
+      const savedLang = localStorage.getItem('user-lang');
+      if (savedLang && this.availableLangs.includes(savedLang)) return savedLang;
+    } catch (error) {
+      console.error('QuizFlow: lettura preferenza lingua non riuscita', error);
     }
 
-    // 2. Browser Lang
-    const browserLang = getBrowserLang() || '';
-    if (this.availableLangs.includes(browserLang)) {
-      return browserLang;
-    }
-
-    // 3. Fallback
-    return this.fallbackLang;
+    const deviceLang = getBrowserLang()?.toLowerCase().split('-')[0] ?? '';
+    return this.availableLangs.includes(deviceLang) ? deviceLang : this.fallbackLang;
   }
 
-  setLanguage(lang: string) {
+  setLanguage(lang: string): void {
     if (!this.availableLangs.includes(lang)) return;
 
-    // Persistenza e stato Transloco
-    localStorage.setItem('user-lang', lang);
-    this.translocoService.setActiveLang(lang);
+    this.applyLanguage(lang);
+    try {
+      localStorage.setItem('user-lang', lang);
+    } catch (error) {
+      console.error('QuizFlow: salvataggio preferenza lingua non riuscito', error);
+    }
+  }
 
-    // Aggiornamento DOM e PrimeNG
+  private applyLanguage(lang: string): void {
+    this.translocoService.setActiveLang(lang);
     document.documentElement.lang = lang;
     this.syncPrimeNG(lang);
   }
 
-  private syncPrimeNG(lang: string) {
+  private syncPrimeNG(lang: string): void {
     this.translocoService.selectTranslation(lang).subscribe(labels => {
       if (labels['primeng']) {
         this.primeng.setTranslation(labels['primeng']);

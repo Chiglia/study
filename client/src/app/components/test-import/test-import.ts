@@ -8,15 +8,18 @@ import { parsePdfTest, PdfTestPreview } from '../../services/pdf-test-parser';
 import { readPdfLines } from '../../services/pdf-test-reader';
 import { CatalogTest } from '../../services/test-catalog';
 import { TestCatalog } from '../test-catalog/test-catalog';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
+import { translateError } from '../../services/translate-error';
 
 @Component({
   selector: 'app-test-import',
-  imports: [ModalFocus, TestCatalog],
+  imports: [ModalFocus, TestCatalog, TranslocoDirective],
   templateUrl: './test-import.html',
   styleUrl: './test-import.css',
 })
 export class TestImport {
   readonly store = inject(QuizStore);
+  private readonly transloco = inject(TranslocoService);
   readonly compact = input(false);
   readonly templateHref = new URL('test-template.json', inject(DOCUMENT).baseURI).href;
   readonly pdfTemplateHref = new URL('test-template.pdf', this.templateHref).href;
@@ -55,7 +58,7 @@ export class TestImport {
 
   save(test: CatalogTest): void {
     if (!this.store.importTest(test)) {
-      this.error.set(this.store.error() || 'Impossibile importare il test.');
+      this.error.set(this.store.error() || this.transloco.translate('errors.importTest'));
       return;
     }
     this.close();
@@ -80,12 +83,14 @@ export class TestImport {
         const preview = parsePdfTest(lines, file.name.slice(0, -4));
         if (request === this.request) this.preview.set(preview);
       } else {
-        throw new Error('Seleziona un file .json o .pdf.');
+        throw new Error(this.transloco.translate('errors.selectFile'));
       }
     } catch (error) {
       if (request === this.request) {
         console.error('QuizFlow: importazione file non riuscita', error);
-        this.error.set(error instanceof Error ? error.message : 'Lettura del file non riuscita.');
+        this.error.set(error instanceof SyntaxError
+          ? this.transloco.translate('errors.invalidJson')
+          : translateError(error, this.transloco));
       }
     } finally {
       if (request === this.request) this.loading.set(false);

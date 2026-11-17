@@ -1,58 +1,54 @@
-<div class="app-layout">
-  <aside class="sidebar">
-    <a class="brand" routerLink="/" aria-label="QuizFlow, dashboard"><span class="brand-icon"><i class="pi pi-bolt"></i></span>Quiz<span>Flow</span></a>
-    <div class="workspace-label">IL TUO SPAZIO DI STUDIO</div>
-    <nav aria-label="Navigazione principale">
-      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><i class="pi pi-th-large"></i> Dashboard</a>
-    </nav>
-    <app-test-navigation />
-    <div class="sidebar-bottom">
-      <button class="help-button" (click)="help.set(true)"><i class="pi pi-question-circle"></i> Come funziona <i class="pi pi-arrow-up-right"></i></button>
-      <div class="sidebar-footer">Fatto per imparare, un quiz alla volta.</div>
-    </div>
-  </aside>
-  <div class="main-layout">
-    <header class="topbar"><span class="local-status"><span aria-hidden="true"></span> Salvataggio locale</span></header>
-    @if (store.error()) {
-      <div class="storage-error" role="alert"><i class="pi pi-exclamation-triangle"></i><span>{{ store.error() }}</span>@if (store.blocked()) { <button class="button secondary" (click)="reset()">Ripristina dati</button> }</div>
-    }
-    <main><router-outlet /></main>
-    <footer class="main-footer"><span><i class="pi pi-code" aria-hidden="true"></i> Made by Chiglia</span><span>QuizFlow <span class="footer-dot">•</span><a class="github-link" href="https://github.com/Chiglia/study" target="_blank" rel="noopener noreferrer" aria-label="Repository QuizFlow su GitHub (si apre in una nuova scheda)" title="Repository su GitHub"><i class="pi pi-github" aria-hidden="true"></i></a></span></footer>
-  </div>
-</div>
-@if (help()) {
-  <div class="modal-backdrop" (click)="help.set(false)">
-    <section class="dialog help-dialog" role="dialog" aria-modal="true" aria-labelledby="help-title" aria-describedby="help-description" appModalFocus (click)="$event.stopPropagation()" (keydown.escape)="help.set(false)">
-      <header class="help-header">
-        <button class="icon-button dialog-close" autofocus aria-label="Chiudi guida" (click)="help.set(false)"><i class="pi pi-times" aria-hidden="true"></i></button>
-        <span class="eyebrow">LA TUA GUIDA A QUIZFLOW</span>
-        <h2 id="help-title">Tre passi per iniziare.</h2>
-        <p id="help-description">Dalle prime domande ai tuoi prossimi progressi, al tuo ritmo.</p>
-      </header>
-      <div class="help-body" tabindex="0" role="region" aria-label="Guida a QuizFlow">
-        <ol class="help-steps">
-          <li>
-            <span class="help-step-number" aria-hidden="true">01</span>
-            <div><h3>Crea o importa un test</h3><p>Premi <strong>Crea test</strong> e scegli un nome, oppure usa <strong>Importa</strong> per partire dal catalogo locale o da un file JSON o PDF.</p></div>
-          </li>
-          <li>
-            <span class="help-step-number" aria-hidden="true">02</span>
-            <div><h3>Aggiungi le domande e parti</h3><p>Nella pagina del test inserisci da 2 a 6 opzioni e indica quella corretta. Da <strong>Opzioni</strong> scegli ordine e domande per schermata, poi premi <strong>Play</strong>.</p></div>
-          </li>
-          <li>
-            <span class="help-step-number" aria-hidden="true">03</span>
-            <div><h3>Allenati, una risposta alla volta</h3><p>Ogni risposta &egrave; definitiva e mostra subito il risultato. Con <strong>Avanti</strong> le domande saltate tornano in fondo; quelle risposte non ritornano.</p></div>
-          </li>
-        </ol>
-        <div class="help-tip"><i class="pi pi-bookmark" aria-hidden="true"></i><p>Ritrovi i tuoi test e gli ultimi modificati nella sidebar. Ogni test conserva progressi e risultati separati: puoi riprendere quando vuoi.</p></div>
-        <aside class="local-note" aria-labelledby="privacy-title">
-          <span class="local-icon"><i class="pi pi-shield" aria-hidden="true"></i></span>
-          <div><h3 id="privacy-title">Il tuo studio, solo tuo.</h3><p>I dati restano nel tuo browser. Nessun account, nessun cloud.</p><p class="local-warning">Cancellando i dati del browser perderai tutti i test.</p></div>
-        </aside>
+<ng-container *transloco="let t">
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a class="brand" routerLink="/" [attr.aria-label]="t('app.brandLabel')"><span class="brand-icon"><i class="pi pi-bolt"></i></span>Quiz<span>Flow</span></a>
+      <div class="workspace-label">{{ t('app.workspace') }}</div>
+      <nav [attr.aria-label]="t('app.mainNavigation')">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><i class="pi pi-th-large"></i> {{ t('app.dashboard') }}</a>
+      </nav>
+      <app-test-navigation />
+      <div class="sidebar-bottom">
+        <button class="help-button" (click)="help.set(true)"><i class="pi pi-question-circle"></i> {{ t('app.help') }} <i class="pi pi-arrow-up-right"></i></button>
+        <div class="sidebar-footer">{{ t('app.sidebarFooter') }}</div>
       </div>
-      <footer class="help-actions">
-        <button class="button primary" (click)="help.set(false)">Tutto chiaro <i class="pi pi-check" aria-hidden="true"></i></button>
-      </footer>
-    </section>
+    </aside>
+    <div class="main-layout">
+      <header class="topbar">
+        <span class="local-status"><span aria-hidden="true"></span> {{ t('app.localSave') }}</span>
+        <button class="language-toggle" type="button" (click)="toggleLanguage()" [attr.aria-label]="language.currentLang === 'it' ? t('app.switchToEnglish') : t('app.switchToItalian')" [title]="language.currentLang === 'it' ? t('app.switchToEnglish') : t('app.switchToItalian')">{{ language.currentLang === 'it' ? 'EN' : 'IT' }}</button>
+      </header>
+      @if (store.error()) {
+        <div class="storage-error" role="alert"><i class="pi pi-exclamation-triangle"></i><span>{{ store.error() }}</span>@if (store.blocked()) { <button class="button secondary" (click)="reset()">{{ t('app.restoreData') }}</button> }</div>
+      }
+      <main><router-outlet /></main>
+      <footer class="main-footer"><span><i class="pi pi-code" aria-hidden="true"></i> {{ t('app.footerCredit') }}</span><span>QuizFlow <span class="footer-dot">•</span><a class="github-link" href="https://github.com/Chiglia/study" target="_blank" rel="noopener noreferrer" [attr.aria-label]="t('app.repository')" [title]="t('app.repositoryTitle')"><i class="pi pi-github" aria-hidden="true"></i></a></span></footer>
+    </div>
   </div>
-}
+  @if (help()) {
+    <div class="modal-backdrop" (click)="help.set(false)">
+      <section class="dialog help-dialog" role="dialog" aria-modal="true" aria-labelledby="help-title" aria-describedby="help-description" appModalFocus (click)="$event.stopPropagation()" (keydown.escape)="help.set(false)">
+        <header class="help-header">
+          <button class="icon-button dialog-close" autofocus [attr.aria-label]="t('app.closeGuide')" (click)="help.set(false)"><i class="pi pi-times" aria-hidden="true"></i></button>
+          <span class="eyebrow">{{ t('app.guideEyebrow') }}</span>
+          <h2 id="help-title">{{ t('app.guideTitle') }}</h2>
+          <p id="help-description">{{ t('app.guideDescription') }}</p>
+        </header>
+        <div class="help-body" tabindex="0" role="region" [attr.aria-label]="t('app.guideRegion')">
+          <ol class="help-steps">
+            <li><span class="help-step-number" aria-hidden="true">01</span><div><h3>{{ t('app.guideStepOne') }}</h3><p>{{ t('app.guideStepOneText') }}</p></div></li>
+            <li><span class="help-step-number" aria-hidden="true">02</span><div><h3>{{ t('app.guideStepTwo') }}</h3><p>{{ t('app.guideStepTwoText') }}</p></div></li>
+            <li><span class="help-step-number" aria-hidden="true">03</span><div><h3>{{ t('app.guideStepThree') }}</h3><p>{{ t('app.guideStepThreeText') }}</p></div></li>
+          </ol>
+          <div class="help-tip"><i class="pi pi-bookmark" aria-hidden="true"></i><p>{{ t('app.guideTip') }}</p></div>
+          <aside class="local-note" aria-labelledby="privacy-title">
+            <span class="local-icon"><i class="pi pi-shield" aria-hidden="true"></i></span>
+            <div><h3 id="privacy-title">{{ t('app.privacyTitle') }}</h3><p>{{ t('app.privacyText') }}</p><p class="local-warning">{{ t('app.privacyWarning') }}</p></div>
+          </aside>
+        </div>
+        <footer class="help-actions">
+          <button class="button primary" (click)="help.set(false)">{{ t('app.guideDone') }} <i class="pi pi-check" aria-hidden="true"></i></button>
+        </footer>
+      </section>
+    </div>
+  }
+</ng-container>
