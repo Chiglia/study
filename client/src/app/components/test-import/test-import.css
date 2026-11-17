@@ -2,5 +2,9 @@
 .import-dialog h2 { margin-top: 0; }
 .import-dialog label { display: block; margin: 22px 0 8px; font-size: 12px; font-weight: 600; }
 .import-dialog input { width: 100%; }
-.template-link { display: inline-block; margin-top: 8px; color: var(--purple); font-size: 12px; }
+.template-links { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 12px; font-size: 12px; }
+.template-links a { color: var(--purple); }
+.template-links a:hover { text-decoration: underline; }
 .import-compact { padding: 10px 6px; color: #716880; }
+.import-preview { margin-top: 18px; padding: 14px; background: #f7f5fc; border-radius: 8px; font-size: 12px; overflow-wrap: anywhere; }
+.import-preview p { margin: 6px 0 0; color: #716880; line-height: 1.6; }

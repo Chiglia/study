@@ -15,7 +15,7 @@ Aprire `http://localhost:4200`. Per generare il sito statico: `npm run build`.
 
 - La dashboard mostra i test e le azioni Crea test e Importa, senza azioni per inserire domande o avviare sessioni.
 - Cerca test nella barra superiore apre il catalogo con ricerca per nome o categoria e permette di aggiungere copie indipendenti dei test preimpostati alla raccolta locale. I nomi gia presenti ricevono un suffisso numerico.
-- Importa da file aggiunge alla raccolta un test personale da un file JSON. Usa il modello scaricabile dal pulsante e indica nome, domande, categoria, opzioni e indice della risposta corretta.
+- Importa da file aggiunge alla raccolta un test personale da un file JSON o PDF, elaborato localmente nel browser.
 - Crea test richiede un nome e apre la pagina dedicata `/test/:id`, dove aggiungere, cercare, filtrare e modificare le domande, rinominare o eliminare il test.
 - Il pulsante Play (o Riprendi test) si trova nella pagina di modifica e apre `/test/:id/svolgi`.
 - Il menu Opzioni permette di rinominare o eliminare il test e di scegliere ordine e numero di domande per schermata (1, 3, 5, 10 oppure tutte). La scelta viene salvata nella sessione e non cambia durante una ripresa.
@@ -43,6 +43,8 @@ Ogni domanda contiene `id` univoco nel test, `text`, `category`, da 2 a 6 string
 ## Importare un test personale
 
 Dalla dashboard (**Importa**), seleziona un JSON basato sul modello `public/test-template.json`. Ogni domanda richiede `text`, `category`, da 2 a 6 `options` e `correct` (indice da zero). Gli identificativi vengono generati automaticamente; i nomi già presenti ricevono un suffisso numerico.
+
+Puoi anche scaricare il modello [PDF di esempio](public/test-template.pdf) dalla finestra di importazione e usarlo come riferimento. Il PDF deve avere domande numerate e risposte contrassegnate `a.`, `b.`, `c.`, `d.`: la risposta corretta deve essere in grassetto. Il nome del file diventa il nome del test e le domande sono importate nell'ordine del documento, senza numeri o lettere iniziali, nella categoria Generale. Sono escluse le domande con meno di due risposte o senza una sola risposta in grassetto; prima di confermare viene mostrato il conteggio. Il PDF deve contenere testo selezionabile: i documenti composti solo da immagini non sono supportati.
 
 ## Dati locali
 
