@@ -1,9 +1,10 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { Question, QuizCollection, QuizLibrary } from './quiz.models';
-import { advanceQuestion, answerQuestion, createSession } from './quiz-state';
+import { advanceQuestion, answerQuestion, createSession, incorrectQuestionIds } from './quiz-state';
 import { CatalogTest, importCatalogTest } from './test-catalog';
 import { TranslocoService } from '@jsverse/transloco';
 import { translateError } from './translate-error';
+import { estimateStorage } from './storage-capacity';
 import {
   activeCollection, deleteCollection, emptyLibrary, parseLibrary,
   recentCollections, saveCollection, selectCollection, updateCollection,
@@ -22,6 +23,10 @@ export class QuizStore {
   readonly questions = computed(() => this.active()?.questions ?? []);
   readonly session = computed(() => this.active()?.session ?? null);
   readonly results = computed(() => this.active()?.results ?? []);
+  readonly storageEstimate = computed(() => {
+    this.data();
+    return estimateStorage(this.data());
+  });
   readonly current = computed(() => {
     const session = this.session();
     return session?.questions.find(question => question.id === session.queue[0]);
@@ -60,6 +65,20 @@ export class QuizStore {
     return this.patch({ session: createSession(this.questions(), options) });
   }
 
+  retryIncorrect(): boolean {
+    const result = this.results().at(-1);
+    const ids = result?.incorrectQuestionIds;
+    const questions = ids?.map(id => this.questions().find(question => question.id === id))
+      .filter((question): question is Question => question !== undefined);
+    if (!questions?.length) return false;
+    const results = this.results().map((item, index) => {
+      if (index !== this.results().length - 1) return item;
+      const { incorrectQuestionIds, ...summary } = item;
+      return summary;
+    });
+    return this.patch({ session: createSession(questions), results });
+  }
+
   answer(option: number, id?: string): void {
     const session = this.session();
     if (session) this.patch({ session: answerQuestion(session, option, id) });
@@ -76,6 +95,7 @@ export class QuizStore {
     const correct = next.questions.filter(question => next.answers[question.id] === question.correct).length;
     const result = {
       id: crypto.randomUUID(), total: next.questions.length, correct, date: new Date().toISOString(),
+      incorrectQuestionIds: incorrectQuestionIds(next),
     };
     this.patch({ session: null, results: [...this.results(), result] });
   }

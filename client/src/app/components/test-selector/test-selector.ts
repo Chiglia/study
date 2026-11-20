@@ -5,6 +5,7 @@ import { QuizStore } from '../../services/quiz-store';
 import { ModalFocus } from '../../services/modal-focus';
 import { TestImport } from '../test-import/test-import';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { QUESTIONS_PER_ESTIMATED_TEST } from '../../services/storage-capacity';
 
 @Component({
   selector: 'app-test-selector',
@@ -13,6 +14,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
   styleUrl: './test-selector.css',
 })
 export class TestSelector {
+  readonly questionsPerEstimate = QUESTIONS_PER_ESTIMATED_TEST;
   readonly store = inject(QuizStore);
   private readonly router = inject(Router);
   readonly variant = input<'create' | 'manage'>('create');

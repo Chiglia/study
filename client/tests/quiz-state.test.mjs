@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { advanceQuestion, answerQuestion, createSession, parseData } from '../src/app/services/quiz-state.ts';
+import {
+  advanceQuestion, answerQuestion, createSession, incorrectQuestionIds, parseData,
+} from '../src/app/services/quiz-state.ts';
 
 const questions = ['a', 'b', 'c'].map(id => ({
   id, text: `Domanda ${id}`, options: ['Corretta', 'Errata'], correct: 0, category: 'Generale',
@@ -88,8 +90,37 @@ test('conteggio corrette e ripristino di un risultato completato', () => {
   for (const option of [0, 1, 0]) session = advanceQuestion(answerQuestion(session, option));
   const correct = session.questions.filter(q => session.answers[q.id] === q.correct).length;
   assert.equal(correct, 2);
-  const saved = { ...data(null), results: [{ id: 'result', total: 3, correct, date: new Date().toISOString() }] };
+  const result = {
+    id: 'result', total: 3, correct, date: new Date().toISOString(),
+    incorrectQuestionIds: incorrectQuestionIds(session),
+  };
+  assert.deepEqual(result.incorrectQuestionIds, ['b']);
+  assert.deepEqual(createSession(session.questions.filter(question =>
+    result.incorrectQuestionIds.includes(question.id)), { randomizeQuestions: false }).queue, ['b']);
+  const saved = { ...data(null), results: [result] };
   assert.deepEqual(parseData(JSON.stringify(saved)), saved);
+  assert.throws(() => parseData(JSON.stringify({
+    ...saved, results: [{ ...result, incorrectQuestionIds: [] }],
+  })));
+});
+
+test('i risultati precedenti senza riferimenti alle domande errate restano validi', () => {
+  const saved = {
+    ...data(null),
+    results: [{ id: 'old', total: 3, correct: 1, date: new Date().toISOString() }],
+  };
+  assert.deepEqual(parseData(JSON.stringify(saved)), saved);
+});
+
+test('migra gli snapshot precedenti salvando solo gli identificativi', () => {
+  const saved = {
+    ...data(null),
+    results: [{ id: 'old', total: 3, correct: 2, date: new Date().toISOString(),
+      incorrectQuestions: [questions[1]] }],
+  };
+  const restored = parseData(JSON.stringify(saved));
+  assert.deepEqual(restored.results[0].incorrectQuestionIds, ['b']);
+  assert.equal('incorrectQuestions' in restored.results[0], false);
 });
 
 test('le opzioni casuali aggiornano la risposta corretta senza mescolare le domande', () => {

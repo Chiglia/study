@@ -135,7 +135,8 @@
     "namePlaceholder": "E.g. JavaScript",
     "createAction": "Create quiz",
     "saveName": "Save name",
-    "nameRequired": "Enter a name for the quiz."
+    "nameRequired": "Enter a name for the quiz.",
+    "storageWarning": "Local space is almost full: you can save about {{count}} more quizzes with {{questions}} questions. Delete a quiz before adding more."
   },
   "import": {
     "import": "Import",
@@ -203,7 +204,7 @@
     "correctAnswers": "{{count}} correct",
     "wrongAnswers": "{{count}} incorrect",
     "lastTest": "Last quiz · {{date}}",
-    "dashboard": "Back to dashboard",
+    "retryIncorrect": "Retry incorrect questions",
     "test": "Back to quiz",
     "continueTip": "From the quiz page you can edit questions or start a new session with Play.",
     "startEyebrow": "START HERE",

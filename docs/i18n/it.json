@@ -203,7 +203,7 @@
     "correctAnswers": "{{count}} corrette",
     "wrongAnswers": "{{count}} errate",
     "lastTest": "Ultimo test · {{date}}",
-    "dashboard": "Torna alla dashboard",
+    "retryIncorrect": "Ripeti le domande errate",
     "test": "Torna al test",
     "continueTip": "Dalla pagina del test puoi modificare le domande o avviare una nuova sessione con Play.",
     "startEyebrow": "SI PARTE DA QUI",

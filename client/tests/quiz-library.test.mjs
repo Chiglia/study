@@ -5,11 +5,29 @@ import {
   recentCollections, saveCollection, selectCollection, updateCollection,
 } from '../src/app/services/quiz-library.ts';
 import { advanceQuestion, answerQuestion, createSession } from '../src/app/services/quiz-state.ts';
+import { estimateStorage, LOCAL_STORAGE_QUOTA_BYTES } from '../src/app/services/storage-capacity.ts';
 
 const question = {
   id: 'q', text: 'Quanto fa 2 + 2?', options: ['4', '5'], correct: 0, category: 'Generale',
 };
 const result = { id: 'r', total: 1, correct: 1, date: '2026-11-09T12:00:00.000Z' };
+
+test('la capacità locale stima test da 50 domande rispetto ai dati usati', () => {
+  const entries = new Map([['quizflow.data.v1', 'x'.repeat(1000)]]);
+  globalThis.localStorage = {
+    get length() { return entries.size; },
+    key: index => [...entries.keys()][index] ?? null,
+    getItem: key => entries.get(key) ?? null,
+  };
+  const library = saveCollection(emptyLibrary(), 'math', 'Matematica');
+  const estimate = estimateStorage(library);
+  assert.equal(estimate.usedBytes, (entries.keys().next().value.length + 1000) * 2);
+  assert.ok(estimate.estimatedTests > 0);
+  entries.set('other', 'x'.repeat(LOCAL_STORAGE_QUOTA_BYTES));
+  assert.equal(estimateStorage(library).estimatedTests, 0);
+  assert.equal(estimateStorage(library).remainingBytes, 0);
+  delete globalThis.localStorage;
+});
 
 test('migrazione v1 conserva domande, risposte in corso e risultati', () => {
   const session = answerQuestion(createSession([question]), 1);

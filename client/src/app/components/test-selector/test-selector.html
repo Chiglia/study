@@ -58,6 +58,15 @@
             <button class="button danger" (click)="remove()">{{ t('selector.delete') }}</button>
           </div>
         } @else {
+          @if (mode === 'create' && store.storageEstimate().estimatedTests <= 2) {
+            <p class="storage-warning" role="alert">
+              <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
+              <span>{{ t('selector.storageWarning', {
+                count: store.storageEstimate().estimatedTests,
+                questions: questionsPerEstimate
+              }) }}</span>
+            </p>
+          }
           <p class="muted">{{ t('selector.nameDescription') }}</p>
           <form (ngSubmit)="save()">
             <label for="test-name">{{ t('selector.name') }}</label>

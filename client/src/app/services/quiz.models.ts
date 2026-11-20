@@ -20,6 +20,7 @@ export interface QuizResult {
   total: number;
   correct: number;
   date: string;
+  incorrectQuestionIds?: string[];
 }
 
 export interface QuizData {

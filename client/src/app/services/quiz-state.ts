@@ -62,6 +62,12 @@ export function advanceQuestion(session: QuizSession): QuizSession {
   };
 }
 
+export function incorrectQuestionIds(session: QuizSession): string[] {
+  return session.questions
+    .filter(question => session.answers[question.id] !== question.correct)
+    .map(question => question.id);
+}
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
@@ -105,15 +111,29 @@ function validSession(value: unknown): boolean {
     && queue.slice(count).every(id => typeof id === 'string' && !Object.hasOwn(answers, id));
 }
 
+function isQuizResult(value: unknown, questions: Question[]): boolean {
+  if (!isRecord(value) || typeof value['id'] !== 'string'
+    || typeof value['date'] !== 'string' || !Number.isFinite(Date.parse(value['date']))
+    || !Number.isInteger(value['total']) || Number(value['total']) <= 0
+    || !Number.isInteger(value['correct']) || Number(value['correct']) < 0
+    || Number(value['correct']) > Number(value['total'])) return false;
+  const expected = Number(value['total']) - Number(value['correct']);
+  const ids = value['incorrectQuestionIds'];
+  if (ids !== undefined) {
+    return Array.isArray(ids) && ids.length === expected
+      && new Set(ids).size === ids.length
+      && ids.every(id => typeof id === 'string' && questions.some(question => question.id === id));
+  }
+  const legacyQuestions = value['incorrectQuestions'];
+  return legacyQuestions === undefined || (validQuestions(legacyQuestions)
+    && legacyQuestions.length === expected
+    && legacyQuestions.every(item => questions.some(question => question.id === item.id)));
+}
+
 function isQuizData(value: unknown): value is QuizData {
   return isRecord(value) && value['version'] === 1 && validQuestions(value['questions'])
     && validSession(value['session']) && Array.isArray(value['results'])
-    && value['results'].every(result => isRecord(result)
-      && typeof result['id'] === 'string'
-      && typeof result['date'] === 'string' && Number.isFinite(Date.parse(result['date']))
-      && Number.isInteger(result['total']) && Number(result['total']) > 0
-      && Number.isInteger(result['correct']) && Number(result['correct']) >= 0
-      && Number(result['correct']) <= Number(result['total']));
+    && value['results'].every(result => isQuizResult(result, value['questions'] as Question[]));
 }
 
 export function parseData(raw: string): QuizData {
@@ -121,5 +141,13 @@ export function parseData(raw: string): QuizData {
   if (!isQuizData(value)) {
     throw new Error('I dati salvati non sono validi. Ripristina i dati per utilizzare l’app.');
   }
-  return value;
+  return {
+    ...value,
+    results: value.results.map(result => {
+      const legacy = result as typeof result & { incorrectQuestions?: Question[] };
+      const { incorrectQuestions, ...summary } = legacy;
+      if (summary.incorrectQuestionIds !== undefined || !incorrectQuestions?.length) return summary;
+      return { ...summary, incorrectQuestionIds: incorrectQuestions.map(question => question.id) };
+    }),
+  };
 }
