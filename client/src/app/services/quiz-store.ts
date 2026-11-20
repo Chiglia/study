@@ -65,6 +65,10 @@ export class QuizStore {
     return this.patch({ session: createSession(this.questions(), options) });
   }
 
+  cancelSession(): boolean {
+    return this.patch({ session: null });
+  }
+
   retryIncorrect(): boolean {
     const result = this.results().at(-1);
     const ids = result?.incorrectQuestionIds;

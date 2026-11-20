@@ -1,14 +1,25 @@
 <ng-container *transloco="let t">
-  <div class="quiz-heading"><a class="text-button" [routerLink]="['/test', store.active()?.id]"><i class="pi pi-arrow-left"></i> {{ t('quiz.backToTest') }}</a><h1>{{ store.active()?.name }}</h1><p>{{ t('quiz.description') }}</p></div>
+  <div class="quiz-heading">
+    <div class="quiz-heading-actions">
+      <a class="text-button" [routerLink]="['/test', store.active()?.id]"><i class="pi pi-arrow-left"></i> {{ t('quiz.continueLater') }}</a>
+      @if (store.session()) {
+        <button class="text-button cancel-test" (click)="cancelSession()" [disabled]="store.blocked()"><i class="pi pi-times"></i>{{ t('quiz.cancelTest') }}</button>
+      }
+    </div>
+    <h1>{{ store.active()?.name }}</h1><p>{{ t('quiz.description') }}</p>
+  </div>
   @if (store.session(); as session) {
-    @if (visibleQuestions().length) {
+    @if (displayedQuestions().length) {
       <section class="quiz-container">
         <div class="progress-label"><span><i class="pi pi-bolt"></i> {{ t('quiz.inProgress') }}</span><strong>{{ t('quiz.answers', {answered: answered(), total: session.questions.length}) }}</strong></div>
         <div class="progress-track" role="progressbar" [attr.aria-label]="t('quiz.answeredQuestions')" [attr.aria-valuenow]="answered()" aria-valuemin="0" [attr.aria-valuemax]="session.questions.length"><div [style.width.%]="progress()"></div></div>
-        @for (question of visibleQuestions(); track question.id) {
+        @if (reviewing()) {
+          <div class="review-notice" role="status"><i class="pi pi-eye"></i><span><strong>{{ t('quiz.reviewTitle') }}</strong>{{ t('quiz.reviewDescription') }}</span></div>
+        }
+        @for (question of displayedQuestions(); track question.id) {
           <article class="test-card">
             <div class="question-meta"><span class="category-label">{{ categories.includes(question.category) ? t('categories.' + question.category) : question.category }}</span><span>{{ t('quiz.remaining', {count: remaining()}) }}</span></div>
-            <h2>{{ question.text }}</h2><p class="question-instruction">{{ t('quiz.instruction') }}</p>
+            <h2>{{ question.text }}</h2><p class="question-instruction">{{ reviewing() ? t('quiz.reviewInstruction') : t('quiz.instruction') }}</p>
             <div class="answer-options" role="group" [attr.aria-label]="t('quiz.answerOptions')">
               @for (option of question.options; track $index; let i = $index) {
                 <button class="answer-option" [class.answer-correct]="selected(question.id) !== null && i === question.correct" [class.answer-wrong]="selected(question.id) === i && i !== question.correct" [disabled]="selected(question.id) !== null || store.blocked()" (click)="store.answer(i, question.id)">
@@ -24,8 +35,19 @@
             </div>
           </article>
         }
-        <div class="test-actions"><a class="text-button" [routerLink]="['/test', store.active()?.id]"><i class="pi pi-arrow-left"></i> {{ t('quiz.continueLater') }}</a><button class="button primary" (click)="store.next()" [disabled]="store.blocked()">{{ pageComplete() ? t('quiz.seeResult') : t('quiz.next') }}<i class="pi pi-arrow-right"></i></button></div>
-        <p class="quiz-tip"><i class="pi pi-info-circle"></i> {{ t('quiz.savedTip') }}</p>
+        @if (reviewing()) {
+          <div class="test-actions review-actions">
+            <button class="button secondary" (click)="reviewEarlier()" [disabled]="!canReviewEarlier()"><i class="pi pi-arrow-left"></i>{{ t('quiz.back') }}</button>
+            <button class="button primary" (click)="leaveReview()">{{ t('quiz.backToCurrent') }}<i class="pi pi-arrow-right"></i></button>
+          </div>
+        } @else {
+          <div class="test-actions">
+            <button class="text-button" (click)="reviewPrevious()" [disabled]="!reviewableQuestions().length"><i class="pi pi-arrow-left"></i> {{ t('quiz.back') }}</button>
+            <div class="forward-actions">
+              <button class="button primary" (click)="next()" [disabled]="store.blocked()">{{ pageComplete() ? t('quiz.seeResult') : t('quiz.next') }}<i class="pi pi-arrow-right"></i></button>
+            </div>
+          </div>
+        }
       </section>
     }
   } @else if (result(); as result) {
