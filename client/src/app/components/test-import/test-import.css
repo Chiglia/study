@@ -1,7 +1,7 @@
 .import-dialog { max-width: 620px; }
 .import-dialog h2 { margin-top: 0; }
 .import-sources { display: flex; border-bottom: 1px solid var(--border); margin: 20px 0; }
-.import-tab { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 8px; border-bottom: 2px solid transparent; margin-bottom: -1px; background: transparent; color: var(--muted); font-size: 13px; font-weight: 600; }
+.import-tab { border-bottom: 2px solid transparent; margin-bottom: -1px; background: transparent; color: var(--muted); }
 .import-tab[aria-selected="true"] { border-bottom-color: var(--purple); color: var(--purple); }
 .import-tab:hover:not(:disabled) { background: #f7f5fc; color: var(--purple); }
 .import-tab:focus-visible { outline: 2px solid var(--purple); outline-offset: -3px; border-radius: 4px; }

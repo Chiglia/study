@@ -1,13 +1,15 @@
-import { Component, inject, input, OnInit, output } from '@angular/core';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { Component, computed, inject, input, OnInit, output } from '@angular/core';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { categories, Question } from '../../services/quiz.models';
 import { QuizStore } from '../../services/quiz-store';
 import { ModalFocus } from '../../services/modal-focus';
+import { SelectModule } from 'primeng/select';
 
 @Component({
   selector: 'app-question-editor',
-  imports: [FormsModule, ModalFocus, TranslocoDirective],
+  imports: [FormsModule, ModalFocus, TranslocoDirective, SelectModule],
   templateUrl: './question-editor.html',
   styleUrl: './question-editor.css',
 })
@@ -15,7 +17,18 @@ export class QuestionEditor implements OnInit {
   readonly question = input<Question | null>(null);
   readonly closed = output<void>();
   readonly store = inject(QuizStore);
+  private readonly transloco = inject(TranslocoService);
+  private readonly activeLang = toSignal(this.transloco.langChanges$, {
+    initialValue: this.transloco.getActiveLang(),
+  });
   readonly categories = categories;
+  readonly categoryOptions = computed(() => {
+    this.activeLang();
+    return categories.map(value => ({
+      value,
+      label: this.transloco.translate(`categories.${value}`),
+    }));
+  });
   text = '';
   category = 'Generale';
   options = ['', '', '', ''];

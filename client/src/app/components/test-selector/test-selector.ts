@@ -6,10 +6,11 @@ import { ModalFocus } from '../../services/modal-focus';
 import { TestImport } from '../test-import/test-import';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { QUESTIONS_PER_ESTIMATED_TEST } from '../../services/storage-capacity';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-test-selector',
-  imports: [FormsModule, ModalFocus, TestImport, TranslocoDirective],
+  imports: [FormsModule, ModalFocus, TestImport, TranslocoDirective, ButtonModule],
   templateUrl: './test-selector.html',
   styleUrl: './test-selector.css',
 })

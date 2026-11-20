@@ -10,10 +10,11 @@ import { CatalogTest } from '../../services/test-catalog';
 import { TestCatalog } from '../test-catalog/test-catalog';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { translateError } from '../../services/translate-error';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-test-import',
-  imports: [ModalFocus, TestCatalog, TranslocoDirective],
+  imports: [ModalFocus, TestCatalog, TranslocoDirective, ButtonModule],
   templateUrl: './test-import.html',
   styleUrl: './test-import.css',
 })

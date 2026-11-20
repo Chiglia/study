@@ -3,10 +3,12 @@ import { FormsModule } from '@angular/forms';
 import { QuizStore } from '../../services/quiz-store';
 import { CatalogTest, parseCatalog } from '../../services/test-catalog';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
     selector: 'app-test-catalog',
-    imports: [FormsModule, TranslocoDirective],
+    imports: [FormsModule, TranslocoDirective, ButtonModule, InputTextModule],
     templateUrl: './test-catalog.html',
     styleUrl: './test-catalog.css',
 })

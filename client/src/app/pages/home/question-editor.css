@@ -2,7 +2,9 @@
 form { margin-top: 25px; }
 label, legend { display: block; font-size: 12px; font-weight: 650; margin-bottom: 9px; }
 label span, legend span { color: var(--purple); }
-textarea, select { width: 100%; margin-bottom: 20px; }
+textarea { width: 100%; margin-bottom: 20px; }
+.editor-category-select { --p-select-background: #fff; --p-select-border-color: #e6dfef; --p-select-border-radius: 8px; }
+:host-context(.my-app-dark) .editor-category-select { --p-select-background: #211c28; --p-select-border-color: #443a4f; }
 fieldset { border: 0; padding: 0; margin: 0; }
 .option-hint { font-size: 11px; color: var(--muted); line-height: 1.6; margin: 0 0 13px; }
 .option-field { display: flex; align-items: center; gap: 10px; border: 1px solid var(--border); border-radius: 9px; padding: 5px 10px; margin-bottom: 9px; }

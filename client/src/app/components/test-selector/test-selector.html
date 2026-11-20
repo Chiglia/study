@@ -1,7 +1,7 @@
 <ng-container *transloco="let t">
   <div class="test-controls" [attr.aria-label]="t('selector.management')">
     @if (variant() === 'create') {
-      <button class="button primary" (click)="open('create')" [disabled]="store.blocked()">
+      <button pButton (click)="open('create')" [disabled]="store.blocked()">
         <i class="pi pi-plus"></i> {{ t('selector.create') }}
       </button>
       <app-test-import [compact]="true" />
@@ -54,8 +54,8 @@
             <p class="form-error" role="alert">{{ store.error() }}</p>
           }
           <div class="dialog-actions">
-            <button class="button secondary" autofocus (click)="this.mode.set(null)">{{ t('selector.cancel') }}</button>
-            <button class="button danger" (click)="remove()">{{ t('selector.delete') }}</button>
+            <button pButton severity="secondary" outlined autofocus (click)="this.mode.set(null)">{{ t('selector.cancel') }}</button>
+            <button pButton severity="danger" (click)="remove()">{{ t('selector.delete') }}</button>
           </div>
         } @else {
           @if (mode === 'create' && store.storageEstimate().estimatedTests <= 2) {
@@ -78,8 +78,8 @@
               <p class="form-error" role="alert">{{ store.error() }}</p>
             }
             <div class="dialog-actions">
-              <button type="button" class="button secondary" (click)="this.mode.set(null)">{{ t('selector.cancel') }}</button>
-              <button type="submit" class="button primary">{{ mode === 'create' ? t('selector.createAction') : t('selector.saveName') }}</button>
+              <button pButton type="button" severity="secondary" outlined (click)="this.mode.set(null)">{{ t('selector.cancel') }}</button>
+              <button pButton type="submit">{{ mode === 'create' ? t('selector.createAction') : t('selector.saveName') }}</button>
             </div>
           </form>
         }

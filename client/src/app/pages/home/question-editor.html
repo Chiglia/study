@@ -8,8 +8,18 @@
       <form (ngSubmit)="save()">
         <label for="question-text">{{ t('editor.question') }} <span>*</span></label>
         <textarea id="question-text" name="text" [(ngModel)]="text" [placeholder]="t('editor.questionPlaceholder')" rows="3" maxlength="2000" required autofocus></textarea>
-        <label for="category">{{ t('editor.category') }}</label>
-        <select id="category" name="category" [(ngModel)]="category">@for (item of categories; track item) { <option [value]="item">{{ t('categories.' + item) }}</option> }</select>
+        <label id="category-label">{{ t('editor.category') }}</label>
+        <p-select
+          id="category"
+          name="category"
+          class="editor-category-select mb-5 w-full"
+          [options]="categoryOptions()"
+          optionLabel="label"
+          optionValue="value"
+          [(ngModel)]="category"
+          [ariaLabelledBy]="'category-label'"
+          appendTo="body"
+        />
         <fieldset><legend>{{ t('editor.answerOptions') }} <span>*</span></legend>
           <p class="option-hint">{{ t('editor.optionHint') }}</p>
           @for (option of options; track $index; let i = $index) {

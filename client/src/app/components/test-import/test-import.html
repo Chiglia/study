@@ -1,12 +1,25 @@
 <ng-container *transloco="let t">
-  <button
-    [class]="compact() ? 'text-button import-compact' : 'button secondary'"
-    (click)="show()"
-    [disabled]="store.blocked()"
-    [attr.aria-label]="t('import.importTest')"
-  >
-    <i class="pi pi-upload" aria-hidden="true"></i> {{ t('import.import') }}
-  </button>
+  @if (compact()) {
+    <button
+      class="text-button import-compact"
+      (click)="show()"
+      [disabled]="store.blocked()"
+      [attr.aria-label]="t('import.importTest')"
+    >
+      <i class="pi pi-upload" aria-hidden="true"></i> {{ t('import.import') }}
+    </button>
+  } @else {
+    <button
+      pButton
+      severity="secondary"
+      outlined
+      (click)="show()"
+      [disabled]="store.blocked()"
+      [attr.aria-label]="t('import.importTest')"
+    >
+      <i class="pi pi-upload" aria-hidden="true"></i> {{ t('import.import') }}
+    </button>
+  }
   @if (open()) {
     <div class="modal-backdrop" (click)="close()">
     <section
@@ -31,7 +44,7 @@
       >
         <button
           id="import-file-tab"
-          class="import-tab"
+          class="import-tab flex flex-1 items-center justify-center gap-2 px-2 py-[13px] text-[13px] font-semibold"
           role="tab"
           aria-controls="import-source-panel"
           [attr.aria-selected]="source() === 'file'"
@@ -44,7 +57,7 @@
         </button>
         <button
           id="import-catalog-tab"
-          class="import-tab"
+          class="import-tab flex flex-1 items-center justify-center gap-2 px-2 py-[13px] text-[13px] font-semibold"
           role="tab"
           aria-controls="import-source-panel"
           [attr.aria-selected]="source() === 'catalog'"
@@ -101,9 +114,9 @@
         }
       </div>
       <div class="dialog-actions">
-        <button class="button secondary" (click)="close()">{{ t('import.close') }}</button>
+        <button pButton severity="secondary" outlined (click)="close()">{{ t('import.close') }}</button>
         @if (source() === 'file' && preview(); as preview) {
-          <button class="button primary" (click)="save(preview.test)" [disabled]="store.blocked()">
+          <button pButton (click)="save(preview.test)" [disabled]="store.blocked()">
             {{ t('import.importTest') }}
           </button>
         }

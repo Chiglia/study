@@ -19,6 +19,7 @@ html.my-app-dark .test-card,
 html.my-app-dark .question-panel,
 html.my-app-dark .shuffle-options,
 html.my-app-dark .help-actions { background: #1f1b27; }
+html.my-app-dark .dialog { border-color: var(--border); }
 html.my-app-dark .welcome-card { background: #2a2239; border-color: #44355b; }
 html.my-app-dark .welcome-icon { background: #ffffff0d; }
 html.my-app-dark .help-header { background: linear-gradient(120deg, #2b2238, #1f1b27); }
@@ -36,19 +37,21 @@ html.my-app-dark .page-size-choices,
 html.my-app-dark .import-preview,
 html.my-app-dark .list-label,
 html.my-app-dark .local-icon { background: #28212f; }
+html.my-app-dark .import-dialog .import-preview p { color: var(--muted); }
 html.my-app-dark .order-choice label:has(input:checked),
 html.my-app-dark .page-size-choices input:checked + span { background: #3b304a; color: #d6c2ef; }
 html.my-app-dark nav a:hover,
 html.my-app-dark .help-button:hover,
 html.my-app-dark app-test-navigation a:hover,
-html.my-app-dark .import-tab:hover,
 html.my-app-dark .management-action:hover,
 html.my-app-dark .icon-button:hover { background: #2b2334; }
+html.my-app-dark .import-dialog .import-tab:hover:not(:disabled) { background: #2b2334; }
 html.my-app-dark nav a.active,
 html.my-app-dark app-test-navigation a.active { background: #342747; color: #c8a9f2; }
 html.my-app-dark .language-toggle,
 html.my-app-dark .theme-toggle { color: #c8c0d1; }
 html.my-app-dark .button.secondary { background: #2b2334; border-color: #4b3d5a; color: #c9a9ec; }
+html.my-app-dark .button.secondary:hover:not(:disabled) { background: #3b304a; border-color: #5c4a70; color: #dbc3f4; }
 html.my-app-dark .list-toolbar,
 html.my-app-dark .question-row { border-color: var(--border); }
 html.my-app-dark .option-field.chosen { background: #2a2235; }
