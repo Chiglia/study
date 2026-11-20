@@ -1,5 +1,6 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { categories, Question } from '../../services/quiz.models';
@@ -7,17 +8,42 @@ import { QuizStore } from '../../services/quiz-store';
 import { ModalFocus } from '../../services/modal-focus';
 import { QuestionEditor } from './question-editor';
 import { TestSelector } from '../../components/test-selector/test-selector';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { SelectModule } from 'primeng/select';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-home',
-  imports: [FormsModule, QuestionEditor, ModalFocus, TestSelector, TranslocoDirective],
+  imports: [
+    FormsModule,
+    QuestionEditor,
+    ModalFocus,
+    TestSelector,
+    TranslocoDirective,
+    ButtonModule,
+    CardModule,
+    SelectModule,
+    TagModule,
+  ],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
 export class Home {
   readonly store = inject(QuizStore);
   private readonly router = inject(Router);
+  private readonly transloco = inject(TranslocoService);
+  private readonly activeLang = toSignal(this.transloco.langChanges$, {
+    initialValue: this.transloco.getActiveLang(),
+  });
   readonly categories = categories;
+  readonly categoryOptions = computed(() => {
+    this.activeLang();
+    return categories.map(value => ({
+      value,
+      label: this.transloco.translate(`categories.${value}`),
+    }));
+  });
   readonly search = signal('');
   readonly category = signal('');
   readonly randomizeQuestions = signal(true);

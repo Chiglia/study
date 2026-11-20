@@ -2,13 +2,27 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { Router, RouterLink } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { MessageModule } from 'primeng/message';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { TagModule } from 'primeng/tag';
 import { QuizStore } from '../../services/quiz-store';
 import { pageSize } from '../../services/quiz-state';
 import { categories } from '../../services/quiz.models';
 
 @Component({
   selector: 'app-quiz',
-  imports: [RouterLink, DatePipe, TranslocoDirective],
+  imports: [
+    RouterLink,
+    DatePipe,
+    TranslocoDirective,
+    ButtonModule,
+    CardModule,
+    MessageModule,
+    ProgressBarModule,
+    TagModule,
+  ],
   templateUrl: './quiz.html',
   styleUrl: './quiz.css',
 })

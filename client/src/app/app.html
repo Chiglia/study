@@ -15,7 +15,10 @@
     <div class="main-layout">
       <header class="topbar">
         <span class="local-status"><span aria-hidden="true"></span> {{ t('app.localSave') }}</span>
-        <button class="language-toggle" type="button" (click)="toggleLanguage()" [attr.aria-label]="language.currentLang === 'it' ? t('app.switchToEnglish') : t('app.switchToItalian')" [title]="language.currentLang === 'it' ? t('app.switchToEnglish') : t('app.switchToItalian')">{{ language.currentLang === 'it' ? 'EN' : 'IT' }}</button>
+        <div class="topbar-actions">
+          <button class="theme-toggle" type="button" (click)="theme.toggleTheme()" [attr.aria-label]="theme.theme() === 'light' ? t('app.switchToDark') : t('app.switchToLight')" [title]="theme.theme() === 'light' ? t('app.switchToDark') : t('app.switchToLight')"><i [class]="theme.theme() === 'light' ? 'pi pi-moon' : 'pi pi-sun'" aria-hidden="true"></i></button>
+          <button class="language-toggle" type="button" (click)="toggleLanguage()" [attr.aria-label]="language.currentLang === 'it' ? t('app.switchToEnglish') : t('app.switchToItalian')" [title]="language.currentLang === 'it' ? t('app.switchToEnglish') : t('app.switchToItalian')">{{ language.currentLang === 'it' ? 'EN' : 'IT' }}</button>
+        </div>
       </header>
       @if (store.error()) {
         <div class="storage-error" role="alert"><i class="pi pi-exclamation-triangle"></i><span>{{ store.error() }}</span>@if (store.blocked()) { <button class="button secondary" (click)="reset()">{{ t('app.restoreData') }}</button> }</div>

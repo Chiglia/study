@@ -14,6 +14,8 @@
     "localSave": "Saved locally",
     "switchToEnglish": "Switch to English",
     "switchToItalian": "Switch to Italian",
+    "switchToDark": "Switch to dark theme",
+    "switchToLight": "Switch to light theme",
     "resetConfirm": "Delete all QuizFlow data saved in this browser?",
     "guideEyebrow": "YOUR QUIZFLOW GUIDE",
     "guideTitle": "Three steps to get started.",

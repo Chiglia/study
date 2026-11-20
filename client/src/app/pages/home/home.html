@@ -1,57 +1,187 @@
 <ng-container *transloco="let t">
-  <section class="page-heading">
-    <div><h1>{{ store.active()?.name }}</h1></div>
-    <div class="editor-controls">
-      <details class="start-settings">
-        <summary [attr.aria-label]="t('home.testOptions')"><i class="pi pi-sliders-h"></i><span>{{ t('home.options') }}</span><i class="pi pi-chevron-down"></i></summary>
-        <div class="shuffle-options">
-          <fieldset class="order-setting"><legend>{{ t('home.questions') }}</legend><div class="order-choice">
-            <label><input type="radio" name="question-order" [checked]="randomizeQuestions()" (change)="randomizeQuestions.set(true)">{{ t('home.random') }}</label>
-            <label><input type="radio" name="question-order" [checked]="!randomizeQuestions()" (change)="randomizeQuestions.set(false)">{{ t('home.original') }}</label>
-          </div></fieldset>
-          <fieldset class="order-setting"><legend>{{ t('home.answers') }}</legend><div class="order-choice">
-            <label><input type="radio" name="answer-order" [checked]="randomizeAnswers()" (change)="randomizeAnswers.set(true)">{{ t('home.random') }}</label>
-            <label><input type="radio" name="answer-order" [checked]="!randomizeAnswers()" (change)="randomizeAnswers.set(false)">{{ t('home.original') }}</label>
-          </div></fieldset>
-          <fieldset class="page-size-setting" [disabled]="!!store.session()" [attr.aria-describedby]="store.session() ? 'page-size-note' : null">
-            <legend>{{ t('home.questionsPerScreen') }}</legend>
-            <div class="page-size-choices">
+  <section class="relative mb-[29px] flex items-center justify-between gap-5 flex-wrap min-[1201px]:flex-nowrap max-md:mb-[23px]">
+    <div class="min-w-0">
+      <h1 class="m-0 break-words text-[clamp(24px,2.2vw,33px)] font-[750] tracking-[-1.1px] max-md:text-[26px]">
+        {{ store.active()?.name }}
+      </h1>
+    </div>
+    <div class="flex min-w-0 flex-wrap items-center gap-3">
+      <details class="start-settings relative max-md:static">
+        <summary
+          class="flex list-none cursor-pointer items-center gap-[7px] px-1 py-2.5 text-[11px] text-[var(--muted)]"
+          [attr.aria-label]="t('home.testOptions')"
+        >
+          <i class="pi pi-sliders-h"></i>
+          <span>{{ t('home.options') }}</span>
+          <i class="pi pi-chevron-down text-[9px]"></i>
+        </summary>
+        <div class="shuffle-options absolute right-0 top-[calc(100%+4px)] z-50 grid w-[250px] gap-3 rounded-[10px] border border-[var(--border)] bg-[var(--home-panel)] p-3.5 shadow-[0_8px_24px_#30243d18]">
+          <fieldset class="order-setting m-0 flex min-w-0 items-center justify-between gap-2.5 border-0 p-0">
+            <legend class="float-left text-[11px] text-[var(--muted)]">{{ t('home.questions') }}</legend>
+            <div class="order-choice flex rounded-[7px] bg-[var(--home-option)] p-[3px]">
+              <label class="flex cursor-pointer items-center gap-[5px] rounded-[5px] px-[7px] py-1.5 text-[10px] text-[var(--home-option-text)]">
+                <input class="m-0 h-3 w-3 p-0 accent-[var(--purple)]" type="radio" name="question-order" [checked]="randomizeQuestions()" (change)="randomizeQuestions.set(true)">
+                {{ t('home.random') }}
+              </label>
+              <label class="flex cursor-pointer items-center gap-[5px] rounded-[5px] px-[7px] py-1.5 text-[10px] text-[var(--home-option-text)]">
+                <input class="m-0 h-3 w-3 p-0 accent-[var(--purple)]" type="radio" name="question-order" [checked]="!randomizeQuestions()" (change)="randomizeQuestions.set(false)">
+                {{ t('home.original') }}
+              </label>
+            </div>
+          </fieldset>
+          <fieldset class="order-setting m-0 flex min-w-0 items-center justify-between gap-2.5 border-0 p-0">
+            <legend class="float-left text-[11px] text-[var(--muted)]">{{ t('home.answers') }}</legend>
+            <div class="order-choice flex rounded-[7px] bg-[var(--home-option)] p-[3px]">
+              <label class="flex cursor-pointer items-center gap-[5px] rounded-[5px] px-[7px] py-1.5 text-[10px] text-[var(--home-option-text)]">
+                <input class="m-0 h-3 w-3 p-0 accent-[var(--purple)]" type="radio" name="answer-order" [checked]="randomizeAnswers()" (change)="randomizeAnswers.set(true)">
+                {{ t('home.random') }}
+              </label>
+              <label class="flex cursor-pointer items-center gap-[5px] rounded-[5px] px-[7px] py-1.5 text-[10px] text-[var(--home-option-text)]">
+                <input class="m-0 h-3 w-3 p-0 accent-[var(--purple)]" type="radio" name="answer-order" [checked]="!randomizeAnswers()" (change)="randomizeAnswers.set(false)">
+                {{ t('home.original') }}
+              </label>
+            </div>
+          </fieldset>
+          <fieldset class="page-size-setting m-0 min-w-0 border-0 p-0" [disabled]="!!store.session()" [attr.aria-describedby]="store.session() ? 'page-size-note' : null">
+            <legend class="mb-2 text-[11px] text-[var(--muted)]">{{ t('home.questionsPerScreen') }}</legend>
+            <div class="page-size-choices flex gap-[3px] rounded-lg bg-[var(--home-option)] p-[3px]">
               @for (size of pageSizes; track size) {
-                <label><input type="radio" name="page-size" [checked]="currentPageSize() === size" (change)="questionsPerPage.set(size)"><span>{{ size }}</span></label>
+                <label class="relative min-w-0 flex-1 cursor-pointer">
+                  <input class="absolute h-px w-px opacity-0" type="radio" name="page-size" [checked]="currentPageSize() === size" (change)="questionsPerPage.set(size)">
+                  <span class="grid min-h-[30px] place-items-center rounded-md px-[5px] text-[11px] text-[var(--home-option-text)] transition-[background,color,box-shadow] duration-150">{{ size }}</span>
+                </label>
               }
-              <label><input type="radio" name="page-size" [checked]="currentPageSize() === 'all'" (change)="questionsPerPage.set('all')"><span>{{ t('home.all') }}</span></label>
+              <label class="relative min-w-0 flex-1 cursor-pointer">
+                <input class="absolute h-px w-px opacity-0" type="radio" name="page-size" [checked]="currentPageSize() === 'all'" (change)="questionsPerPage.set('all')">
+                <span class="grid min-h-[30px] place-items-center rounded-md px-[5px] text-[11px] text-[var(--home-option-text)] transition-[background,color,box-shadow] duration-150">{{ t('home.all') }}</span>
+              </label>
               @if (legacyPageSize(); as size) {
-                <label><input type="radio" name="page-size" [checked]="true"><span>{{ size }}</span></label>
+                <label class="relative min-w-0 flex-1 cursor-pointer">
+                  <input class="absolute h-px w-px opacity-0" type="radio" name="page-size" [checked]="true">
+                  <span class="grid min-h-[30px] place-items-center rounded-md px-[5px] text-[11px] text-[var(--home-option-text)]">{{ size }}</span>
+                </label>
               }
             </div>
           </fieldset>
-          @if (store.session()) { <p class="settings-note" id="page-size-note">{{ t('home.sessionLocked') }}</p> }
+          @if (store.session()) {
+            <p id="page-size-note" class="m-0 text-[10px] leading-normal text-[var(--muted)]">{{ t('home.sessionLocked') }}</p>
+          }
           <app-test-selector variant="manage" />
         </div>
       </details>
-      <button class="button primary" (click)="start()" [disabled]="(!store.questions().length && !store.session()) || store.blocked()"><i class="pi pi-play"></i> {{ store.session() ? t('home.resume') : t('home.start') }}</button>
+      <button pButton icon="pi pi-play" [label]="store.session() ? t('home.resume') : t('home.start')" (click)="start()" [disabled]="(!store.questions().length && !store.session()) || store.blocked()"></button>
     </div>
   </section>
-  <p class="test-summary">{{ t('home.questionSessions', {questions: store.questions().length, sessions: store.results().length}) }}</p>
-  <section class="question-section">
-    <div class="section-heading"><div><h2>{{ t('home.questionCount') }} <span class="count-pill">{{ store.questions().length }}</span></h2></div><button class="button primary" (click)="edit()" [disabled]="store.blocked()"><i class="pi pi-plus"></i> {{ t('home.newQuestion') }}</button></div>
-    <div class="question-panel">
-      <div class="list-toolbar"><div class="search-field"><i class="pi pi-search"></i><input [attr.aria-label]="t('home.searchQuestions')" [placeholder]="t('home.searchPlaceholder')" [ngModel]="search()" (ngModelChange)="search.set($event)"></div><div class="filter-field"><i class="pi pi-filter"></i><select [attr.aria-label]="t('home.filterCategory')" [ngModel]="category()" (ngModelChange)="category.set($event)"><option value="">{{ t('home.allCategories') }}</option>@for (item of categories; track item) { <option [value]="item">{{ t('categories.' + item) }}</option> }</select></div></div>
+
+  <p class="mb-0 mt-2 text-[10px] text-[var(--muted)]">
+    {{ t('home.questionSessions', {questions: store.questions().length, sessions: store.results().length}) }}
+  </p>
+
+  <section class="mt-8">
+    <div class="mb-[18px] flex items-center justify-between gap-[15px] max-md:flex-wrap max-md:items-start">
+      <div>
+        <h2 class="m-0 flex items-center gap-[9px] text-[17px] tracking-[-0.3px]">
+          {{ t('home.questionCount') }}
+          <p-tag styleClass="count-pill rounded-md px-[7px] py-1 text-[10px]" severity="secondary" [value]="store.questions().length.toString()" />
+        </h2>
+      </div>
+      <button pButton icon="pi pi-plus" [label]="t('home.newQuestion')" (click)="edit()" [disabled]="store.blocked()"></button>
+    </div>
+
+    <p-card class="question-panel relative z-10 block overflow-hidden">
+      <div class="flex justify-between gap-4 border-b border-[var(--home-toolbar-border)] bg-[var(--home-panel)] px-[21px] py-4 max-md:gap-[5px] max-md:p-3">
+        <div class="flex flex-1 items-center gap-2.5 max-md:gap-[7px]">
+          <i class="pi pi-search text-xs text-[#aaa3b6]"></i>
+          <input
+            class="w-full border-0 bg-transparent p-0 py-1.5 text-[11px] shadow-none max-md:text-[10px]"
+            [attr.aria-label]="t('home.searchQuestions')"
+            [placeholder]="t('home.searchPlaceholder')"
+            [ngModel]="search()"
+            (ngModelChange)="search.set($event)"
+          >
+        </div>
+        <div class="relative z-10 flex items-center gap-[5px] rounded-md border border-[var(--border)] pl-2.5 max-md:pl-[7px]">
+          <i class="pi pi-filter text-xs text-[#aaa3b6]"></i>
+          <p-select
+            class="category-select"
+            [options]="categoryOptions()"
+            optionLabel="label"
+            optionValue="value"
+            [ngModel]="category()"
+            [ariaLabel]="t('home.filterCategory')"
+            [placeholder]="t('home.allCategories')"
+            [showClear]="!!category()"
+            appendTo="body"
+            panelStyleClass="category-select-panel"
+            (ngModelChange)="category.set($event ?? '')"
+          />
+        </div>
+      </div>
+
       @if (filtered().length) {
-        <div class="list-label"><span>{{ t('home.questionColumn') }}</span><span>{{ t('home.categoryColumn') }}</span><span>{{ t('home.actionsColumn') }}</span></div>
+        <div class="grid grid-cols-[1fr_120px_78px] bg-[var(--home-header)] px-[22px] py-[13px] text-[8px] tracking-[1px] text-[var(--muted)] max-md:hidden">
+          <span>{{ t('home.questionColumn') }}</span>
+          <span>{{ t('home.categoryColumn') }}</span>
+          <span class="text-right">{{ t('home.actionsColumn') }}</span>
+        </div>
         @for (question of filtered(); track question.id; let i = $index) {
-          <article class="question-row"><span class="question-number">{{ (i + 1).toString().padStart(2, '0') }}</span><div class="question-detail"><h3>{{ question.text }}</h3></div><span class="category-pill">{{ categories.includes(question.category) ? t('categories.' + question.category) : question.category }}</span><div class="row-actions"><button class="icon-button" [attr.aria-label]="t('home.editQuestion', {text: question.text})" (click)="edit(question)" [disabled]="store.blocked()"><i class="pi pi-pencil"></i></button><button class="icon-button delete-button" [attr.aria-label]="t('home.deleteQuestion', {text: question.text})" (click)="deleting.set(question)" [disabled]="store.blocked()"><i class="pi pi-trash"></i></button></div></article>
+          <article class="flex items-center gap-3.5 border-t border-[var(--home-row-border)] bg-[var(--home-panel)] px-[22px] py-[19px] max-md:flex-wrap max-md:gap-2.5 max-md:px-3 max-md:py-[15px]">
+            <span class="grid h-8 w-[30px] shrink-0 place-items-center rounded-md bg-[var(--home-soft)] text-[10px] text-[var(--home-number)]">
+              {{ (i + 1).toString().padStart(2, '0') }}
+            </span>
+            <div class="min-w-0 flex-1 max-md:basis-[calc(100%-45px)]">
+              <h3 class="mb-[7px] mt-0 break-words text-xs font-[550]">{{ question.text }}</h3>
+            </div>
+            <p-tag styleClass="category-pill min-w-[75px] px-[9px] py-[5px] text-[9px] max-md:ml-10" severity="secondary" [value]="categories.includes(question.category) ? t('categories.' + question.category) : question.category" />
+            <div class="row-actions flex w-[83px] justify-end gap-[5px] max-md:ml-auto">
+              <button pButton [text]="true" severity="secondary" icon="pi pi-pencil" [attr.aria-label]="t('home.editQuestion', {text: question.text})" (click)="edit(question)" [disabled]="store.blocked()"></button>
+              <button pButton [text]="true" severity="danger" class="delete-button" icon="pi pi-trash" [attr.aria-label]="t('home.deleteQuestion', {text: question.text})" (click)="deleting.set(question)" [disabled]="store.blocked()"></button>
+            </div>
+          </article>
         }
-        <div class="list-footer">{{ filtered().length }} / {{ store.questions().length }}</div>
+        <div class="flex justify-between border-t border-[var(--border)] px-[22px] py-3.5 text-[9px] text-[#aaa2b4]">
+          {{ filtered().length }} / {{ store.questions().length }}
+        </div>
       } @else {
-        <div class="empty-state"><div class="empty-icon"><i class="pi pi-clone"></i><span>+</span></div><h3>{{ store.questions().length ? t('home.noQuestionsFound') : t('home.firstQuestionTitle') }}</h3><p>{{ store.questions().length ? t('home.tryDifferentFilters') : t('home.firstQuestionPrompt') }}</p>
-          @if (!store.questions().length) { <button class="button secondary" (click)="edit()" [disabled]="store.blocked()"><i class="pi pi-plus"></i> {{ t('home.createFirstQuestion') }}</button> } @else { <button class="text-button" (click)="search.set(''); category.set('')">{{ t('home.removeFilters') }}</button> }
+        <div class="px-5 py-[34px] text-center max-md:px-[15px] max-md:py-[30px]">
+          <div class="relative mx-auto mb-[17px] grid h-[51px] w-[51px] place-items-center rounded-[14px] border border-[var(--border)] bg-[var(--home-accent-soft)] text-[var(--home-number)] empty-icon">
+            <i class="pi pi-clone text-[22px]"></i>
+            <span class="absolute -bottom-[3px] -right-[5px] grid h-[19px] w-[19px] place-items-center rounded-full border-[3px] border-white bg-[#a78acd] text-[11px] text-white">+</span>
+          </div>
+          <h3 class="mb-2 mt-0 text-sm font-semibold max-md:leading-relaxed">
+            {{ store.questions().length ? t('home.noQuestionsFound') : t('home.firstQuestionTitle') }}
+          </h3>
+          <p class="mb-[21px] mt-0 text-[11px] text-[var(--home-secondary-text)]">
+            {{ store.questions().length ? t('home.tryDifferentFilters') : t('home.firstQuestionPrompt') }}
+          </p>
+          @if (!store.questions().length) {
+            <button pButton [outlined]="true" icon="pi pi-plus" [label]="t('home.createFirstQuestion')" (click)="edit()" [disabled]="store.blocked()"></button>
+          } @else {
+            <button pButton [text]="true" [label]="t('home.removeFilters')" (click)="search.set(''); category.set('')"></button>
+          }
         </div>
       }
-    </div>
+    </p-card>
   </section>
-  @if (editorOpen()) { <app-question-editor [question]="editing()" (closed)="editorOpen.set(false)" /> }
+
+  @if (editorOpen()) {
+    <app-question-editor [question]="editing()" (closed)="editorOpen.set(false)" />
+  }
   @if (deleting(); as question) {
-    <div class="modal-backdrop" (click)="deleting.set(null)"><section class="dialog delete-dialog" role="dialog" aria-modal="true" aria-labelledby="delete-title" appModalFocus (click)="$event.stopPropagation()" (keydown.escape)="deleting.set(null)"><span class="eyebrow">{{ t('home.manageCollection') }}</span><h2 id="delete-title">{{ t('home.deleteQuestionTitle') }}</h2><p class="muted">{{ question.text }}</p><p class="muted">{{ t('home.deleteQuestionWarning') }}</p>@if (store.error()) { <p class="form-error" role="alert">{{ store.error() }}</p> }<div class="dialog-actions"><button class="button secondary" autofocus (click)="deleting.set(null)">{{ t('home.cancel') }}</button><button class="button danger" (click)="remove()">{{ t('home.deleteQuestionAction') }}</button></div></section></div>
+    <div class="modal-backdrop" (click)="deleting.set(null)">
+      <section class="dialog max-w-[460px]" role="dialog" aria-modal="true" aria-labelledby="delete-title" appModalFocus (click)="$event.stopPropagation()" (keydown.escape)="deleting.set(null)">
+        <span class="eyebrow">{{ t('home.manageCollection') }}</span>
+        <h2 id="delete-title">{{ t('home.deleteQuestionTitle') }}</h2>
+        <p class="muted">{{ question.text }}</p>
+        <p class="muted">{{ t('home.deleteQuestionWarning') }}</p>
+        @if (store.error()) {
+          <p class="form-error" role="alert">{{ store.error() }}</p>
+        }
+        <div class="dialog-actions">
+          <button pButton [outlined]="true" severity="secondary" autofocus [label]="t('home.cancel')" (click)="deleting.set(null)"></button>
+          <button pButton severity="danger" [label]="t('home.deleteQuestionAction')" (click)="remove()"></button>
+        </div>
+      </section>
+    </div>
   }
 </ng-container>

@@ -31,9 +31,31 @@ app-test-import {
   color: #716880;
   text-align: left;
   font-size: 11px;
+  transition: background 0.15s, color 0.15s;
 }
-.management-action:hover:not(:disabled) { background: #f7f5fc; }
+.management-action:hover:not(:disabled) {
+  color: #64469b;
+  background: #f2ecfa;
+}
 .delete-action { color: #b46262; }
+.delete-action:hover:not(:disabled) {
+  color: #a84e4e;
+  background: #fff0f0;
+}
+:host-context(.my-app-dark) .management-action {
+  color: #c4b7d1;
+}
+:host-context(.my-app-dark) .management-action:hover:not(:disabled) {
+  color: #d9c5ef;
+  background: #30263e;
+}
+:host-context(.my-app-dark) .delete-action {
+  color: #df9b9b;
+}
+:host-context(.my-app-dark) .delete-action:hover:not(:disabled) {
+  color: #f0b3b3;
+  background: #3a2228;
+}
 form {
   margin-top: 23px;
 }

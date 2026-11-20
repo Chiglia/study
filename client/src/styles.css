@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import 'tailwindcss-primeui';
 @import 'primeicons/primeicons.css';
+@import './dark-theme.css';
 
 :root { --purple: #7954ca; --ink: #383044; --muted: #9a92a6; --border: #ede9f2; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif; color: var(--ink); background: #faf9fd; font-synthesis: none; }
 * { box-sizing: border-box; }

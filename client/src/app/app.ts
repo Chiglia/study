@@ -9,6 +9,7 @@ import { QuizStore } from './services/quiz-store';
 import { ModalFocus } from './services/modal-focus';
 import { TestNavigation } from './components/test-navigation/test-navigation';
 import { LanguageService } from './services/language-service';
+import { ThemeService } from './services/theme-service';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ import { LanguageService } from './services/language-service';
 })
 export class App {
   readonly language = inject(LanguageService);
+  readonly theme = inject(ThemeService);
   readonly store = inject(QuizStore);
   readonly help = signal(false);
   private readonly router = inject(Router);

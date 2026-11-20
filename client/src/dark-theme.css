@@ -1,0 +1,65 @@
+html.my-app-dark {
+  --ink: #f0eaf5;
+  --muted: #aaa0b5;
+  --border: #3a3343;
+  background: #17141c;
+}
+
+html.my-app-dark body { background: #17141c; }
+html.my-app-dark input,
+html.my-app-dark textarea,
+html.my-app-dark select { color: var(--ink); background: #211c28; border-color: #443a4f; }
+html.my-app-dark input::placeholder,
+html.my-app-dark textarea::placeholder { color: #81768e; }
+html.my-app-dark .sidebar,
+html.my-app-dark .topbar,
+html.my-app-dark .dialog,
+html.my-app-dark .overview,
+html.my-app-dark .test-card,
+html.my-app-dark .question-panel,
+html.my-app-dark .shuffle-options,
+html.my-app-dark .help-actions { background: #1f1b27; }
+html.my-app-dark .welcome-card { background: #2a2239; border-color: #44355b; }
+html.my-app-dark .welcome-icon { background: #ffffff0d; }
+html.my-app-dark .help-header { background: linear-gradient(120deg, #2b2238, #1f1b27); }
+html.my-app-dark .folder-icon,
+html.my-app-dark .count-pill,
+html.my-app-dark .question-number,
+html.my-app-dark .category-pill,
+html.my-app-dark .empty-icon,
+html.my-app-dark .answer-letter,
+html.my-app-dark .result-icon { background: #30263e; border-color: #4a395e; color: #c0a5e4; }
+html.my-app-dark .session-badge,
+html.my-app-dark .local-note { background: #1d3027; border-color: #315541; color: #9ac3a9; }
+html.my-app-dark .order-choice,
+html.my-app-dark .page-size-choices,
+html.my-app-dark .import-preview,
+html.my-app-dark .list-label,
+html.my-app-dark .local-icon { background: #28212f; }
+html.my-app-dark .order-choice label:has(input:checked),
+html.my-app-dark .page-size-choices input:checked + span { background: #3b304a; color: #d6c2ef; }
+html.my-app-dark nav a:hover,
+html.my-app-dark .help-button:hover,
+html.my-app-dark app-test-navigation a:hover,
+html.my-app-dark .import-tab:hover,
+html.my-app-dark .management-action:hover,
+html.my-app-dark .icon-button:hover { background: #2b2334; }
+html.my-app-dark nav a.active,
+html.my-app-dark app-test-navigation a.active { background: #342747; color: #c8a9f2; }
+html.my-app-dark .language-toggle,
+html.my-app-dark .theme-toggle { color: #c8c0d1; }
+html.my-app-dark .button.secondary { background: #2b2334; border-color: #4b3d5a; color: #c9a9ec; }
+html.my-app-dark .list-toolbar,
+html.my-app-dark .question-row { border-color: var(--border); }
+html.my-app-dark .option-field.chosen { background: #2a2235; }
+html.my-app-dark .answer-option { background: #211c28; }
+html.my-app-dark .answer-option:hover:not(:disabled) { background: #2b2237; }
+html.my-app-dark .answer-correct { background: #193026; border-color: #417658; color: #8fceb0; }
+html.my-app-dark .answer-wrong { background: #382023; border-color: #8f4d53; color: #e39b9f; }
+html.my-app-dark .answer-correct .answer-letter { background: #244335; color: #9bd0b4; }
+html.my-app-dark .answer-wrong .answer-letter { background: #4b292d; color: #e3a2a6; }
+html.my-app-dark .storage-error,
+html.my-app-dark .form-error { background: #3a2225; color: #f1a8a3; }
+html.my-app-dark .storage-warning { background: #382f1c; border-color: #6d5a2e; color: #e6ca7d; }
+html.my-app-dark .result-icon { border-color: #2b2233; }
+html.my-app-dark .local-note h3 { color: #9ac3a9; }

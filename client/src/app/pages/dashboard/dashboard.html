@@ -1,26 +1,80 @@
 <ng-container *transloco="let t">
-  <section class="dashboard-heading">
-    <div><span class="eyebrow">{{ t('dashboard.eyebrow') }}</span><h1>{{ t('dashboard.title') }}<span>{{ t('dashboard.titleAccent') }}</span></h1><p>{{ t('dashboard.description') }}</p></div>
+  <section class="mb-8 flex items-center justify-between gap-[25px] max-md:flex-col max-md:items-start max-md:gap-[17px]">
+    <div>
+      <span class="eyebrow">{{ t('dashboard.eyebrow') }}</span>
+      <h1 class="my-3.5 text-[clamp(26px,2.5vw,36px)] font-bold tracking-[-1px] max-md:text-[29px]">
+        {{ t('dashboard.title') }}<span class="text-[var(--purple)]">{{ t('dashboard.titleAccent') }}</span>
+      </h1>
+      <p class="m-0 text-[13px] leading-[1.8] text-[var(--muted)]">{{ t('dashboard.description') }}</p>
+    </div>
     <app-test-selector />
   </section>
+
   @if (!store.collections().length) {
-    <section class="welcome-card">
-      <span class="welcome-icon"><i class="pi pi-folder-plus"></i></span>
-      <h2>{{ t('dashboard.welcomeTitle') }}</h2>
-      <p>{{ t('dashboard.welcomeText') }}</p>
-      <div class="welcome-steps"><span>{{ t('dashboard.stepOne') }}</span><i class="pi pi-arrow-right"></i><span>{{ t('dashboard.stepTwo') }}</span><i class="pi pi-arrow-right"></i><span>{{ t('dashboard.stepThree') }}</span></div>
+    <section class="welcome-card rounded-[17px] border border-[#e6dcf6] bg-[#f0eafa] px-7 py-[65px] text-center max-md:px-5 max-md:py-[35px]">
+      <span class="welcome-icon inline-grid h-[75px] w-[75px] place-items-center rounded-[20px] bg-white/60 text-[var(--purple)]">
+        <i class="pi pi-folder-plus text-[30px]"></i>
+      </span>
+      <h2 class="mb-[15px] mt-6 text-[29px] font-[650] tracking-[-0.5px] max-md:text-[25px]">
+        {{ t('dashboard.welcomeTitle') }}
+      </h2>
+      <p class="text-sm leading-[1.9] text-[#91819f]">{{ t('dashboard.welcomeText') }}</p>
+      <div class="welcome-steps mt-10 flex items-center justify-center gap-[17px] text-xs text-[#9882b4] max-md:flex-col max-md:gap-[13px]">
+        <span>{{ t('dashboard.stepOne') }}</span>
+        <i class="pi pi-arrow-right text-[10px]"></i>
+        <span>{{ t('dashboard.stepTwo') }}</span>
+        <i class="pi pi-arrow-right text-[10px]"></i>
+        <span>{{ t('dashboard.stepThree') }}</span>
+      </div>
     </section>
   } @else {
-    <div class="overview" [attr.aria-label]="t('dashboard.summaryLabel')"><span><strong>{{ store.collections().length }}</strong> {{ t('dashboard.testsCreated') }}</span><span><strong>{{ questionCount() }}</strong> {{ t('dashboard.totalQuestions') }}</span><span><strong>{{ completedCount() }}</strong> {{ t('dashboard.sessionsCompleted') }}</span></div>
+    <div
+      class="overview mb-[35px] flex flex-wrap gap-[30px] rounded-xl border border-[var(--border)] bg-white p-6 max-md:gap-[18px] max-md:p-[18px]"
+      [attr.aria-label]="t('dashboard.summaryLabel')"
+    >
+      <span class="text-xs text-[var(--muted)] max-md:text-[11px]">
+        <strong class="mr-[7px] text-[22px] text-[var(--purple)]">{{ store.collections().length }}</strong>
+        {{ t('dashboard.testsCreated') }}
+      </span>
+      <span class="text-xs text-[var(--muted)] max-md:text-[11px]">
+        <strong class="mr-[7px] text-[22px] text-[var(--purple)]">{{ questionCount() }}</strong>
+        {{ t('dashboard.totalQuestions') }}
+      </span>
+      <span class="text-xs text-[var(--muted)] max-md:text-[11px]">
+        <strong class="mr-[7px] text-[22px] text-[var(--purple)]">{{ completedCount() }}</strong>
+        {{ t('dashboard.sessionsCompleted') }}
+      </span>
+    </div>
+
     <section aria-labelledby="dashboard-tests-title">
-      <div class="collection-heading"><h2 id="dashboard-tests-title">{{ t('dashboard.yourTests') }}</h2><p>{{ t('dashboard.openTestHint') }}</p></div>
-      <div class="test-grid">
+      <div class="mb-[22px]">
+        <h2 id="dashboard-tests-title" class="mb-2.5 mt-0 text-xl font-[650]">{{ t('dashboard.yourTests') }}</h2>
+        <p class="m-0 text-[13px] leading-[1.8] text-[var(--muted)]">{{ t('dashboard.openTestHint') }}</p>
+      </div>
+      <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,310px),1fr))] gap-5">
         @for (test of store.collections(); track test.id) {
-          <a class="test-card" [routerLink]="['/test', test.id]">
-            <div class="card-top"><span class="folder-icon"><i class="pi pi-folder"></i></span>@if (test.session) { <span class="session-badge">{{ t('dashboard.inProgress') }}</span> }</div>
-            <h3>{{ test.name }}</h3>
-            <p>{{ t('dashboard.testCounts', {questions: test.questions.length, sessions: test.results.length}) }}</p>
-            <div class="card-footer"><span>{{ test.modifiedAt ? t('dashboard.modified', {date: (test.modifiedAt | date:'dd/MM/yyyy, HH:mm')}) : t('dashboard.ready') }}</span><strong>{{ t('dashboard.openTest') }} <i class="pi pi-arrow-right"></i></strong></div>
+          <a class="test-card min-w-0 rounded-[13px] border border-[var(--border)] bg-white p-6" [routerLink]="['/test', test.id]">
+            <div class="flex items-center justify-between gap-2.5">
+              <span class="folder-icon grid h-11 w-11 place-items-center rounded-xl bg-[#f1ebfa] text-[#a387c7]">
+                <i class="pi pi-folder"></i>
+              </span>
+              @if (test.session) {
+                <span class="session-badge rounded-[5px] bg-[#eff8f2] px-2 py-1.5 text-[9px] text-[#6c9e80]">
+                  {{ t('dashboard.inProgress') }}
+                </span>
+              }
+            </div>
+            <h3 class="mb-[9px] mt-5 break-words text-[19px] font-semibold">{{ test.name }}</h3>
+            <p class="text-[11px] text-[var(--muted)]">{{ t('dashboard.testCounts', {questions: test.questions.length, sessions: test.results.length}) }}</p>
+            <div class="mt-[23px] flex flex-wrap items-center justify-between gap-2.5 border-t border-[var(--border)] pt-[17px]">
+              <span class="text-[9px] text-[#b0a5bc]">
+                {{ test.modifiedAt ? t('dashboard.modified', {date: (test.modifiedAt | date:'dd/MM/yyyy, HH:mm')}) : t('dashboard.ready') }}
+              </span>
+              <strong class="text-[11px] font-[550] text-[var(--purple)]">
+                {{ t('dashboard.openTest') }}
+                <i class="pi pi-arrow-right ml-1.5 text-[10px]"></i>
+              </strong>
+            </div>
           </a>
         }
       </div>
