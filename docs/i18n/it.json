@@ -135,7 +135,8 @@
     "namePlaceholder": "Es. JavaScript",
     "createAction": "Crea test",
     "saveName": "Salva nome",
-    "nameRequired": "Inserisci un nome per il test."
+    "nameRequired": "Inserisci un nome per il test.",
+    "storageWarning": "Spazio locale quasi esaurito: puoi salvare circa {{count}} ulteriori test da {{questions}} domande. Elimina un test prima di aggiungerne altri."
   },
   "import": {
     "import": "Importa",
